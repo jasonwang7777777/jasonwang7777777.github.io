@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吃着瘦服务SOP查询工具</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; padding: 20px; background-color: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; }
+        #searchInput { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        #result { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border: 1px dashed #ccc; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; display: none; }
+        #copyBtn { margin-top: 10px; padding: 10px 15px; background-color: #07c160; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; }
+        #copyBtn:hover { background-color: #06ae56; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>吃着瘦服务SOP查询工具</h2>
+        <input type="text" id="searchInput" placeholder="请输入代码，例如 C11">
+        <div id="result"></div>
+        <button id="copyBtn">一键复制</button>
+    </div>
+
+    <script>
+        // ！！！重要：将这里的词库替换成您自己的完整词库 ！！！
+        const codeLibrary = {
+            "C11": "这里是代码C11对应的长达100字甚至更长的文本内容。员工只需要输入C11，这个完整的句子就会立刻显示出来，可以一键复制。这极大地提高了工作效率和回复的准确性。",
+            "C12": "这是另一条代码C12对应的长文本内容。可以根据不同的场景、不同的产品信息设置成千上万条这样的规则。所有数据由一个中央词库管理，更新非常方便。",
+            "A01": "这是A01条款的详细解释文本，内容可以非常长。通过这个H5工具，完美解决了微信内使用长文本模板的痛点。"
+            // ... 在此处添加您所有的上千条代码 ...
+        };
+
+        const searchInput = document.getElementById('searchInput');
+        const resultDiv = document.getElementById('result');
+        const copyBtn = document.getElementById('copyBtn');
+
+        searchInput.addEventListener('input', function() {
+            const code = this.value.trim().toUpperCase();
+            resultDiv.style.display = 'none';
+            copyBtn.style.display = 'none';
+
+            if (codeLibrary[code]) {
+                resultDiv.textContent = codeLibrary[code];
+                resultDiv.style.display = 'block';
+                copyBtn.style.display = 'block';
+            }
+        });
+
+        copyBtn.addEventListener('click', async function() {
+            const textToCopy = resultDiv.textContent;
+            try {
+                await navigator.clipboard.writeText(textToCopy);
+                alert('内容已复制到剪贴板！');
+            } catch (err) {
+                // 兼容旧版浏览器的复制方式
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('内容已复制到剪贴板！');
+            }
+        });
+    </script>
+</body>
+</html>
