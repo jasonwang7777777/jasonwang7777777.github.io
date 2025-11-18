@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链接跳转测试 - 吃着瘦</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f3eb 0%, #f0e6d6 100%);
+            color: #5a4a42;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(139, 87, 42, 0.15);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #8B572A;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f9f1e7;
+            border-radius: 10px;
+            border-left: 4px solid #8B572A;
+        }
+        
+        .test-title {
+            color: #8B572A;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .test-desc {
+            color: #5a4a42;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .test-btn {
+            width: 100%;
+            padding: 14px;
+            background: #8B572A;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+        
+        .test-btn:hover {
+            background: #6d4220;
+            transform: translateY(-2px);
+        }
+        
+        .qrcode-section {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f9f1e7;
+            border-radius: 10px;
+        }
+        
+        .qrcode-image {
+            max-width: 200px;
+            height: auto;
+            margin: 15px 0;
+            border: 2px solid #8B572A;
+            border-radius: 8px;
+        }
+        
+        .note {
+            font-size: 12px;
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f4fd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #1890ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>链接跳转测试页面</h1>
+        
+        <!-- 测试1：直接a标签链接 -->
+        <div class="test-section">
+            <div class="test-title">测试1：直接a标签链接</div>
+            <div class="test-desc">使用标准的 &lt;a&gt; 标签，设置 target="_blank"</div>
+            <a href="https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzkxNjM2MDg3Ng==" target="_blank" class="test-btn">
+                点击跳转到公众号（a标签）
+            </a>
+            <div class="result" id="result1">等待测试...</div>
+        </div>
+        
+        <!-- 测试2：JavaScript window.open -->
+        <div class="test-section">
+            <div class="test-title">测试2：JavaScript window.open</div>
+            <div class="test-desc">通过JavaScript的window.open方法打开链接</div>
+            <button class="test-btn" onclick="testWindowOpen()">
+                点击跳转到公众号（window.open）
+            </button>
+            <div class="result" id="result2">等待测试...</div>
+        </div>
+        
+        <!-- 测试3：JavaScript创建a标签点击 -->
+        <div class="test-section">
+            <div class="test-title">测试3：动态创建a标签</div>
+            <div class="test-desc">通过JavaScript动态创建a标签并模拟点击</div>
+            <button class="test-btn" onclick="testCreateLink()">
+                点击跳转到公众号（动态创建）
+            </button>
+            <div class="result" id="result3">等待测试...</div>
+        </div>
+        
+        <!-- 测试4：location.href跳转 -->
+        <div class="test-section">
+            <div class="test-title">测试4：location.href跳转</div>
+            <div class="test-desc">直接修改window.location.href（当前页面跳转）</div>
+            <button class="test-btn" onclick="testLocationHref()">
+                点击跳转到公众号（location.href）
+            </button>
+            <div class="result" id="result4">等待测试...</div>
+        </div>
+        
+        <!-- 二维码方案 -->
+        <div class="qrcode-section">
+            <div class="test-title">备选方案：公众号二维码</div>
+            <div class="test-desc">如果链接跳转都不行，可以使用二维码方案</div>
+            <img src="qrcode.jpg" alt="吃着瘦公众号二维码" class="qrcode-image" onerror="this.style.display='none'">
+            <div class="note">请将公众号二维码图片放在同目录下，命名为 qrcode.jpg</div>
+            <div class="note">保存图片到相册，然后在微信扫一扫中打开</div>
+        </div>
+    </div>
+
+    <script>
+        function testWindowOpen() {
+            try {
+                const newWindow = window.open('https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzkxNjM2MDg3Ng==', '_blank');
+                if (newWindow) {
+                    document.getElementById('result2').textContent = '✅ 成功打开新窗口';
+                } else {
+                    document.getElementById('result2').textContent = '❌ 可能被浏览器阻止，请检查弹窗设置';
+                }
+            } catch (error) {
+                document.getElementById('result2').textContent = '❌ 错误：' + error.message;
+            }
+        }
+        
+        function testCreateLink() {
+            try {
+                const link = document.createElement('a');
+                link.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzkxNjM2MDg3Ng==';
+                link.target = '_blank';
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                document.getElementById('result3').textContent = '✅ 已尝试跳转';
+            } catch (error) {
+                document.getElementById('result3').textContent = '❌ 错误：' + error.message;
+            }
+        }
+        
+        function testLocationHref() {
+            try {
+                window.location.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzkxNjM2MDg3Ng==';
+                document.getElementById('result4').textContent = '✅ 正在跳转...';
+            } catch (error) {
+                document.getElementById('result4').textContent = '❌ 错误：' + error.message;
+            }
+        }
+        
+        // 监听a标签点击事件
+        document.querySelector('a[target="_blank"]').addEventListener('click', function() {
+            document.getElementById('result1').textContent = '✅ 已点击a标签链接';
+        });
+        
+        // 页面加载时显示当前环境信息
+        window.addEventListener('load', function() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            let environment = '未知浏览器';
+            
+            if (userAgent.includes('micromessenger')) {
+                environment = '微信浏览器';
+            } else if (userAgent.includes('mobile')) {
+                environment = '手机浏览器';
+            } else {
+                environment = '桌面浏览器';
+            }
+            
+            // 在每个结果区域显示环境信息
+            const results = document.querySelectorAll('.result');
+            results.forEach(result => {
+                const originalText = result.textContent;
+                result.textContent = originalText + ' | 环境：' + environment;
+            });
+        });
+    </script>
+</body>
+</html>
