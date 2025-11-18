@@ -2,52 +2,269 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>吃着瘦服务SOP查询工具</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; padding: 20px; background-color: #f5f5f5; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: #333; }
-        #searchInput { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
-        #result { margin-top: 20px; padding: 15px; background-color: #f9f9f9; border: 1px dashed #ccc; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; display: none; }
-        #copyBtn { margin-top: 10px; padding: 10px 15px; background-color: #07c160; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; }
-        #copyBtn:hover { background-color: #06ae56; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+            padding: 15px;
+            background-color: #f8f3eb;
+            color: #5a4a42;
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            height: calc(100vh - 30px);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(139, 87, 42, 0.1);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(139, 87, 42, 0.2);
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        h2 {
+            text-align: center;
+            color: #8B572A;
+            margin-bottom: 20px;
+            padding-right: 70px;
+            font-size: 18px;
+        }
+        
+        #searchInput {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: 1px solid #d4b896;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #fefaf5;
+            color: #5a4a42;
+            transition: all 0.3s;
+        }
+        
+        #searchInput:focus {
+            outline: none;
+            border-color: #8B572A;
+            box-shadow: 0 0 0 2px rgba(139, 87, 42, 0.2);
+        }
+        
+        #instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f1e7;
+            border: 1px solid #e6d5c3;
+            border-radius: 8px;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        #instructions h3 {
+            margin-top: 0;
+            color: #8B572A;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        #instructions ul {
+            padding-left: 20px;
+        }
+        
+        #instructions li {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        #result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f9f1e7;
+            border: 1px dashed #d4b896;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+        
+        #copyBtn {
+            margin-top: 15px;
+            padding: 14px;
+            background-color: #8B572A;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        #copyBtn:hover {
+            background-color: #6d4220;
+        }
+        
+        .contact-btn {
+            margin-top: 15px;
+            padding: 14px;
+            background-color: #5a4a42;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .contact-btn:hover {
+            background-color: #3e332d;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Logo区域 -->
+        <div class="logo">
+            <img src="logo.jpg" alt="吃着瘦Logo" onerror="this.style.display='none'">
+        </div>
+        
         <h2>吃着瘦服务SOP查询工具</h2>
-        <input type="text" id="searchInput" placeholder="请输入代码，例如第一天第一条话术就输入11">
+        <input type="text" id="searchInput" placeholder="输入代码后一键复制话术">
+        
+        <!-- 说明区域 -->
+        <div id="instructions">
+            <h3>使用说明</h3>
+            <ul>
+                <li>此工具为吃着瘦5天服务SOP，准备的1天加上服务的5天共6天。</li>
+                <li>直接输入两个数字就可以查询到对应话术，第1天第1条话术就输入11，第5天第8条就输入58。</li>
+                <li>每天共8条话术，建议发布时间为：第一条8:30，二条和三条10:30，四条12:00，五条15:30，六条17:30，七条和八条21:30。</li>
+                <li>请点击右上角三个点，然后打开"浮窗"按钮，小程序会在边栏，使用更加便捷。</li>
+                <li>本小程序是吃着瘦团队开发，不足之处欢迎大家提出意见建议。</li>
+            </ul>
+        </div>
+        
         <div id="result"></div>
         <button id="copyBtn">一键复制</button>
+        <button class="contact-btn" id="contactBtn">联系我们</button>
     </div>
 
     <script>
-        // ！！！重要：将这里的词库替换成您自己的完整词库 ！！！
+        // 从Excel表格中提取的话术库
         const codeLibrary = {
-            "11": "你好，先给我看一下你购买199套餐的下单截屏，这个套餐只面向零售或者意向顾客，已经是代理的不在服务范围内哈",
-            "12": "好的，看到啦。有些需要你提前发给客户的资料，我现在发给你，你慢慢看，然后转给顾客，建群前全部铺垫好，做好这些准备工作。",
-            "13": "准备其他东西前，你先回答下面这三个问题，我要了解客户的情况",
-            "14": "好的，顾客资料我看到了。等你的顾客收到货后咱们就正式开始建群",
-            "15": "建群前也要和你说一下，我们的服务流程一共是5天，全程会围绕转化1800元推进，你也要积极配合",
-            "16": "随时关注群信息，引导客户信任老师，信任产品，服务过程中一定会有一天任澜直播，让客户看直播建立对吃着瘦建立信任，有问题可以在直播间提问"
- 
-            // ... 在此处添加您所有的上千条代码 ...
+            // 第一天话术
+            "11": "10年专注\"生活化减脂\"，我已陪伴上万名姐妹成功瘦身，见证了她们从焦虑到自信的蜕变。我坚信，真正的减肥无需忍饥挨饿，也无需在健身房挥汗如雨，它是一种可以舒适融入日常的智慧。\n\n我的核心方法在于 \"吃着瘦\"——这不是一个空洞的口号，而是一套完整的科学体系。我们不去对抗食欲，而是学会与食物合作。通过巧妙地调整饮食结构，优化三大营养素的配比，你完全可以吃饱、吃好，在享受美食带来的满足感中，自然地唤醒身体的代谢力，逐步打造不依赖极端手段的\"易瘦体质\"。\n\n这不仅仅关乎体重数字的下降，更是一场心灵与食物的和解。我们告别对热量的恐慌，学会倾听身体的声音，从而打破\"节食-暴食-反弹\"的恶性循环。这是一种可持续的生活方式，让你在享受生活的同时，轻松收获理想身材，并真正地守住它。\n\n让我作为你的向导，将这十年沉淀的经验化繁为简，陪你开启这场不痛苦、不反弹的蜕变之旅。你的自信人生，可以从下一餐开始。",
+            "12": "邀请你先看一下这个链接，这是\"吃着瘦\"十年中对数万客户积累的饮食建议，很健康效果也很好。同时，底下评论区有很多案例哦，你也可以看一看。我是你的专属营养师xx，未来5天，我会一直陪着你，我们一起加油。有问题随时在群里问我哈。",
+            "13": "现在第一步，我需要详细了解您的体质情况，好为您制定专属食谱以及方案。\n您的身高、体重、年龄，方便告诉我一下吗？",
+            "14": "另外亲爱的，我们的服务时间是5天，从你正式体验产品的第一天开始哈。 这5天里，请放心大胆的把你的体重交给我，也诚挚的邀请你信任我的专业。 这5天里呢， 为了达到最好的效果，有几点需要配合我：\n1，每天早上起床后，打卡空腹体重；（不喝水，上完厕所，穿固定的轻薄衣服）\n2，每天吃进嘴里的所有食物，都一定要拍照发给我；（我要根据你的饮食习惯适配你减重的最佳方案）\n3，这期间你有任何不适，一定要告诉我；\n能做到不？",
+            "15": "另外亲爱的，还想问你一下，\n1，你有肠炎胃炎之类的问题吗？\n2，有喝黑咖啡的习惯吗？\n3，多久上一次大厕？",
+            "16": "好的明白。那明天咱们就正式开始5天的瘦身之旅啦，你需要准备的是：\n1，带电子显示屏等体脂称，最好能连接手机app；\n2，\"吃着瘦空题营养膳食套盒\"其中包括随便果8颗，四季代餐4包，膳食纤维咖啡4条，生酮咖啡4条；\n3，一颗积极的，真正想要瘦身的心；",
+            "17": "Day 1 饮食建议 ：\n早餐：1~2个鸡蛋+一杯生酮咖啡；\n中餐：饭前10~30分钟，一颗随便果\n晚餐：正常吃（建议 8点前）",
+            "18": "体重打卡格式：\nx月x日 ：\nx月x日 ：\nx月x日 ：\nx月x日 ：\nx月x日 ：\nx月x日 ：以上就是明天的食谱，还有明早体重打卡的模版。咱们明天见。今天睡个好觉，争取10点前上床，10点就入睡。晚间11点到凌晨3点，是咱们身体的生长激素分泌最旺盛的时候，生长激素作用可大了，它能帮助我们清理大脑的垃圾，免疫力的重建，以及五脏六腑细胞的修复。明天第一天 ，我要先了解你的饮食习惯，所以你先按照你平时的食物去吃就行哈。记得拍照发群里哦。早点睡，明天早上等着你的体重和早餐打卡！",
+            
+            // 第二天话术
+            "21": "早安呀，今早上大厕了吗？我们吃着瘦的第1天开始啦~期待你的体重和早餐的打卡哟。",
+            "22": "中午的餐食，记得拍照发给我哟，今天吃的任何食物都拍照给我哈。 一些不经意的，你以为不会影响减重的小习惯，恰恰很有可能就是我们不掉称的核心原因。另外，有个小小的提醒，中餐：饭前10~30分钟，一颗随便果哟。",
+            "23": "中午饭前吃的这颗随便果，它是发酵了至少4个月的青梅制作的，含有大量的酵素。所以吃了后，每个人都会根据自己的肠道情况出现不同的反应。\n健康肠道 ：排的量可能会比平时多一些；\n炎性/有害菌多的肠道：排的次数可能会比平时多一些；\n缺膳食纤维的肠道：可能没反应，甚至反而不排了；",
+            "24": "午餐时间到啦，看看你今天吃了什么呀",
+            "25": "亲爱的，下午记得要多喝温热水哟~每天饮水量:体重公斤数*40ml\n例如60公斤体重的朋友，每天喝水量应该是：60*40=2400ml。脂肪的代谢需要水的参与，身体垃圾的排出，也需要水的参与。\n水喝足够，脂肪才代谢得更快呢。",
+            "26": "准备吃晚饭啦~\n\n晚餐建议在18点前吃完哈，细嚼慢咽，大脑传递吃饱了的信号给你，需要至少20分钟。所以如果吃太快的话，就会不知不觉摄入太多。睡觉前4个小时，尽量不吃任何的食物了哈。 睡觉前2小时，尽量不喝水 ，以免水肿。",
+            "27": "Day 2 饮食建议 ：\n早餐：1~2个鸡蛋+1袋代餐；\n中餐：饭前或者饭后10~30分钟，一条膳食纤维咖啡；\n晚餐：餐前2颗随便果；\n\n午餐：土豆红薯玉米这些，和米饭一样，都是主食，一餐一个拳头的量就够了。蛋白质的话，建议你炒个小炒肉，可以再做个海带汤，紫菜汤之类的。\n\n晚餐：主食依然是一个拳头的量，搭配点牛肉汤，煎豆腐都可以",
+            "28": "睡觉前4个小时，尽量不吃任何的食物了哈。 睡觉前2小时，尽量不喝水 ，以免水肿。明天你的喝水一定要足够哟。\n\n再次强调一下：脂肪的代谢，如果没有水的参与，就会严重被影响。早点睡哈。不要熬夜，明天早上等着你的体重和早餐打卡！",
+            
+            // 第三天话术
+            "31": "早安呀，我们吃着瘦的第2天开始啦~期待你的体重和早餐的打卡哟。",
+            "32": "今天所有吃进去的食物都要拍照给我哟；要喝够水，每日饮水量：体重kg*40ml，例如120斤的人应该喝水：60*40=2400ml；今天中午的膳食咖啡，可放在饭前喝，也可放在饭后喝；跟午餐的相隔时间不超过20分钟；",
+            "33": "以上的这条短视频，可以看看哦。咱们随着年龄的增大，提升代谢，不仅有利于减重，对我们的身体健康，非常有帮助。减重本来就是个漫长的过程，至少要给自已2-3个月的时间你的体重来讲的话 ，要减个xx斤，需要3-4个月，才是最稳定的",
+            "34": "别忘了饭前或者饭后10~30分钟，一条膳食纤维咖啡。这款咖啡的配方，在市面上独一无二，其它地方根本买不着，配料表就是咖啡+膳食纤维。咖啡本身的功效就不说了，可以提升代谢高达13%，促进脂肪燃烧。膳食纤维的作用更是妙不可言，是益生菌的食物，能帮助我们减少糖份和脂肪的吸收。能降糖，降胆固醇，降重金属对我们身体的伤害，所以哪怕不减脂的人群，我们都推荐，每天必须来一条呢。",
+            "35": "中午喝了膳食咖啡有没有觉得排的很畅快呀。除了膳食咖啡，套餐包里还有4条生酮咖啡。这个在你减重路上，也是功不可没：\n1，帮你补充优质脂肪酸，坚持喝，你会发现皮肤越来越好；\n2，生酮咖啡里面的成分，它就像个引子，能够引导你身体的脂肪出来燃烧；另外还有酵素青梅：帮你清理肠道，所谓肠无渣面若花，肠道干净，血液就干净，那我们的脸上也不会长各种斑点，皱纹；\n\n四季代餐：帮你补足各种抗氧化的营养，抗氧化就是抗衰。也帮你补充身体代谢需要的原材料，让你的代谢加速；",
+            "36": "准备吃晚饭啦~\n\n",
+            "37": "Day 3 饮食建议 ：\n早餐：1~2个鸡蛋+1袋代餐+1杯生酮咖啡；\n中餐：饭前或者饭后10~30分钟，一条膳食纤维咖啡；\n晚餐：餐前1颗随便果；\n\n中餐强烈建议中午多吃点肉肉，各种肉都可以，至少200克熟重。早餐建议不要吃太早，不需要一起 床就吃，晚一点没关系，因为明天早餐要吃的东西还蛮多，可以不着急的慢慢享受。\n\n晚餐可以少吃点哈，最好吃到5分饱（感受还没吃饱）就行，睡前4小时不能吃东西了哟。",
+            "38": "明天继续跟着老师给的食谱来，认真体验产品哈。我给大家搭配的营养包，都是减重必须的基础产品。5天之后，以及未来的40天里，你一定会爱上这些产品，也会爱上这种减重的方式。早点睡哈。不要熬夜，明天早上等着你的体重和早餐打卡！",
+            
+            // 第四天话术
+            "41": "早安呀，我们吃着瘦的第3天开始啦~期待你的体重和早餐的打卡哟。",
+            "42": "今天记得要多喝水哈。午餐食材必须要多样化，才能摄取到不同的营养素，全方位的重塑自己。如果你认同咱们这种方式，就可以赶紧把40天的计划安排起来哈。 刚好这5天体验结束后，就能衔接得上。\n减肥就是，一鼓作气，再而衰。\n年前瘦个20斤，惊呆所有人",
+            "43": "40天的话，我们需要8盒随便果，4盒代餐，2盒生酮咖啡，2盒膳食咖啡。一个阶段能减8-15斤。40天下来，你会对科学的营养搭配有个基础的认知，甚至对孩子的成长发育，对老人的营养护理，都会有个大概的了解。",
+            "44": "午餐时间到啦，看看你今天吃了什么呀",
+            "45": "今天是咱们打卡的第三天，看了你的饮食习惯，对比你的减重目标。你一定要来参加我们40天的正式减脂服务。 用这40天，去改变你的饮食习惯。去改变你的虚胖体质。 吃得不多，还不好减肥，一定是有原因的。",
+            "46": "准备吃晚饭啦~\n\n",
+            "47": "Day 4饮食建议 ：\n早餐：1~2个鸡蛋+1袋代餐+1杯生酮咖啡；\n中餐：饭前或者饭后10~30分钟，一条膳食纤维咖啡；\n晚餐：餐前1颗随便果；\n\n产品搭配和昨天是一样的。 餐食原则依然是注重进食的顺序，先喝汤，再吃肉菜，最后吃主食。 主食一个拳头的量就够了。",
+            "48": "周x晚上19:00，有任澜老师的营养课程直播，欢迎你来直播间一起互动。关于吃着瘦的问题，还有很多营养学知识都可以问，我在直播间等你哈早点睡哈。不要熬夜，明天早上等着你的体重和早餐打卡！",
+            
+            // 第五天话术
+            "51": "早安呀，我们吃着瘦的第4天开始啦~期待你的体重和早餐的打卡哟。",
+            "52": "恭喜你呀！三天减了xx斤。前三天感觉怎样，有没有一种不是在减肥而是在认真吃饭，你有什么收获都可以说的？1.肚子有没有舒服一点，软一点2.有没有感觉人精神一些3才三天效果这么好，既然下定决心了，我们就坚持到底，不达目标不罢休",
+            "53": "亲，给你分享个喜讯，隔壁群里的朋友跟你一样的效果，他说坚持就是胜利，下单了40天的套餐，你也一起来",
+            "54": "午餐时间到啦，看看你今天吃了什么呀",
+            "55": "亲，这个点在忙不，记得喝温热水通过这几天的吃着瘦，你已经减重xx斤（或者改善了xx亚健康的状况）。你这几天吃的是基础产品，而且是只有4天的体验装。如果你的目标最主要是减重，40天通常来讲，掉个8-15斤没问题，根据每个人身体的情况，有对人还会更多甚至去到xx多斤。",
+            "56": "准备吃晚饭啦~\n\n",
+            "57": "Day 5饮食建议 ：\n早餐：1~2个鸡蛋+1袋代餐+1杯生酮咖啡；\n中餐：饭前或者饭后10~30分钟，一条膳食纤维咖啡；\n晚餐：餐前1颗随便果；\n\n今天咱们可以吃得清淡点哈。水煮鱼水煮肉都可以，如果有橄榄油亚麻籽油，或者紫苏籽油，淋上去就最好啦。 晚餐也尽量吃少一些，睡前保持轻微的饥饿感，是最利于减脂以及健康的。\n\n不建议吃太多玉米油，花生油，调和油，这些油的omega3含量太高了，会让我们身体一直处于慢性炎症的状态 。",
+            "58": "亲，我们体验到了第四天啦，有没有感觉肚子紧了点或裤子松了点？隔壁群里的伙伴体重只掉了2斤，肚子明显舒服了，他直接提了40天的量，让代谢调得更好，能得到一个周期饮食指导，让你学会健康吃瘦，来吧别再犹豫啦！40天依然是一对一服务哈，而且这40天里，还有关于女性抗衰，调理5高，抗氧化食材等等内容分享给你。今晚早点睡哈。不要熬夜，明天早上等着你的体重和早餐打卡！",
+            
+            // 第六天话术
+            "61": "早安呀，我们吃着瘦的第5天开始啦~期待你的体重和早餐的打卡哟。",
+            "62": "呀呀呀，效果这么好，这也太开心了，隔屏都感觉到了。亲，这几天掉秤不多是不是学会了吃的方法，还有吃的量，这是终身受益，21天能养成一个好习惯，两个21天呢？来吧继续一起来，让我陪你，也是给我一个服务的机会可好",
+            "63": "这位朋友最开始一点没瘦，坚持下来后第7.8.9天才减的，看现在瘦了多少斤，身材好了还健康了，如果放弃了，就没有现在的帅气或小蛮腰，来吧亲爱的，那个帅气或青春靓丽的你在呼唤在向你招手",
+            "64": "午餐时间到啦，看看你今天吃了什么呀",
+            "65": "没有具体话术：问候顾客，根据实践情况来促单（例如重量超标多少，有没有基础病）",
+            "66": "准备吃晚饭啦~\n\n",
+            "67": "亲，到这里我们五天的体验就要结束了。能辛苦做一个总结不？收获了什么，也可以给我们提点意见啊，为以后更好的服务",
+            "68": "今天是我们营养餐食点评的最后一天，你的产品已经在邮寄给你的路上，等你收到货，我们就开始下一个阶段40天的吃着瘦餐食打卡哈。我们10年来已经服务过上万顾客，帮助他们减重成功，你也一定可以，我们一起加油。收到货之前这个群也不解散，你可以每天打卡，不要间断，不要暴饮暴食哈，今晚早点睡！"
         };
 
         const searchInput = document.getElementById('searchInput');
+        const instructionsDiv = document.getElementById('instructions');
         const resultDiv = document.getElementById('result');
         const copyBtn = document.getElementById('copyBtn');
+        const contactBtn = document.getElementById('contactBtn');
 
         searchInput.addEventListener('input', function() {
             const code = this.value.trim().toUpperCase();
             resultDiv.style.display = 'none';
             copyBtn.style.display = 'none';
+            contactBtn.style.display = 'block';
 
             if (codeLibrary[code]) {
+                // 显示查询结果，隐藏说明和联系我们按钮
+                instructionsDiv.style.display = 'none';
+                contactBtn.style.display = 'none';
                 resultDiv.textContent = codeLibrary[code];
                 resultDiv.style.display = 'block';
                 copyBtn.style.display = 'block';
+            } else {
+                // 没有查询结果，显示说明和联系我们按钮
+                instructionsDiv.style.display = 'block';
+                contactBtn.style.display = 'block';
             }
         });
 
@@ -66,6 +283,20 @@
                 document.body.removeChild(textArea);
                 alert('内容已复制到剪贴板！');
             }
+        });
+
+        contactBtn.addEventListener('click', function() {
+            // 复制微信号到剪贴板
+            const wechatId = 'chizheshou666';
+            const textArea = document.createElement('textarea');
+            textArea.value = wechatId;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // 提示用户
+            alert('微信号 ' + wechatId + ' 已复制到剪贴板，请打开微信添加好友！\n\n同时，欢迎大家关注吃着瘦官方公众号（服务号）：吃着瘦');
         });
     </script>
 </body>
