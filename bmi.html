@@ -111,6 +111,11 @@
             font-size: 14px;
         }
         
+        .optional-label {
+            color: #8B572A;
+            opacity: 0.7;
+        }
+        
         input {
             width: 100%;
             padding: 12px;
@@ -153,9 +158,13 @@
         
         .indicators-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 15px;
             margin-bottom: 20px;
+        }
+        
+        .indicators-grid.full {
+            grid-template-columns: 1fr 1fr;
         }
         
         .indicator-card {
@@ -340,11 +349,16 @@
             margin-bottom: 0;
         }
         
-        .wechat-link {
-            color: #1890ff;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: bold;
+        .modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .optional-note {
+            font-size: 12px;
+            color: #8B572A;
+            opacity: 0.7;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -367,22 +381,24 @@
             
             <div class="input-row">
                 <div class="input-item">
-                    <label for="height">身高 (cm)</label>
+                    <label for="height">身高 (cm) *</label>
                     <input type="number" id="height" placeholder="请输入身高" min="100" max="250">
                 </div>
                 <div class="input-item">
-                    <label for="weight">体重 (kg)</label>
+                    <label for="weight">体重 (kg) *</label>
                     <input type="number" id="weight" placeholder="请输入体重" min="20" max="200">
                 </div>
             </div>
             <div class="input-row">
                 <div class="input-item">
-                    <label for="waist">腰围 (cm)</label>
-                    <input type="number" id="waist" placeholder="请输入腰围" min="50" max="150">
+                    <label for="waist" class="optional-label">腰围 (cm)</label>
+                    <input type="number" id="waist" placeholder="选填腰围" min="50" max="150">
+                    <div class="optional-note">选填，填写后可计算腰臀比</div>
                 </div>
                 <div class="input-item">
-                    <label for="hip">臀围 (cm)</label>
-                    <input type="number" id="hip" placeholder="请输入臀围" min="60" max="200">
+                    <label for="hip" class="optional-label">臀围 (cm)</label>
+                    <input type="number" id="hip" placeholder="选填臀围" min="60" max="200">
+                    <div class="optional-note">选填，填写后可计算腰臀比</div>
                 </div>
             </div>
         </div>
@@ -390,17 +406,13 @@
         <button class="calculate-btn" onclick="calculateHealthIndicators()">计算健康指标</button>
         
         <div class="result-section" id="resultSection">
-            <div class="indicators-grid">
+            <div class="indicators-grid" id="indicatorsGrid">
                 <div class="indicator-card">
                     <div class="indicator-title">BMI指数</div>
                     <div class="indicator-value" id="bmiValue">--</div>
                     <div class="indicator-category" id="bmiCategory">--</div>
                 </div>
-                <div class="indicator-card">
-                    <div class="indicator-title">腰臀比</div>
-                    <div class="indicator-value" id="whrValue">--</div>
-                    <div class="indicator-category" id="whrCategory">--</div>
-                </div>
+                <!-- 腰臀比卡片将通过JavaScript动态添加 -->
             </div>
             
             <div>
@@ -417,18 +429,8 @@
                 </div>
             </div>
             
-            <div>
-                <div class="indicator-title">腰臀比指标</div>
-                <div class="gauge-container">
-                    <div class="gauge-fill" id="whrGaugeFill"></div>
-                    <div class="gauge-marker" id="whrGaugeMarker"></div>
-                </div>
-                <div class="gauge-labels">
-                    <span>低风险</span>
-                    <span>中等风险</span>
-                    <span>高风险</span>
-                </div>
-            </div>
+            <!-- 腰臀比指标区域将通过JavaScript动态添加 -->
+            <div id="whrSection"></div>
             
             <div class="risk-assessment" id="riskAssessment">
                 <div class="risk-title">健康风险评估</div>
@@ -458,6 +460,7 @@
     <script>
         let selectedGender = '';
         let currentWeight = 0;
+        let hasWHRData = false;
         
         function selectGender(gender) {
             selectedGender = gender;
@@ -474,7 +477,7 @@
             
             currentWeight = weight;
             
-            // 验证输入
+            // 验证必填输入
             if (!selectedGender) {
                 alert('请选择性别');
                 return;
@@ -485,23 +488,16 @@
                 return;
             }
             
-            if (!waist || !hip || waist < 50 || waist > 150 || hip < 60 || hip > 200) {
-                alert('请输入有效的腰围（50-150cm）和臀围（60-200cm）数值');
-                return;
-            }
+            // 检查是否有腰臀比数据
+            hasWHRData = waist && hip && waist >= 50 && waist <= 150 && hip >= 60 && hip <= 200;
             
             // 计算BMI
             const heightInMeter = height / 100;
             const bmi = weight / (heightInMeter * heightInMeter);
             const roundedBMI = bmi.toFixed(1);
             
-            // 计算腰臀比
-            const whr = waist / hip;
-            const roundedWHR = whr.toFixed(2);
-            
             // 显示结果
             document.getElementById('bmiValue').textContent = roundedBMI;
-            document.getElementById('whrValue').textContent = roundedWHR;
             
             // 确定BMI分类
             let bmiCategory, bmiColor, bmiRisk, needWeightLoss;
@@ -526,6 +522,47 @@
                 bmiRisk = '高';
                 needWeightLoss = true;
             }
+            
+            document.getElementById('bmiCategory').textContent = bmiCategory;
+            document.getElementById('bmiCategory').style.color = bmiColor;
+            
+            // 更新度量器
+            updateBMIGauge(bmi);
+            
+            // 如果有腰臀比数据，计算并显示
+            if (hasWHRData) {
+                calculateAndDisplayWHR(waist, hip);
+                // 设置双列布局
+                document.getElementById('indicatorsGrid').classList.add('full');
+            } else {
+                // 设置单列布局
+                document.getElementById('indicatorsGrid').classList.remove('full');
+                // 清除腰臀比区域
+                document.getElementById('whrSection').innerHTML = '';
+            }
+            
+            // 生成综合建议和风险评估
+            const advice = generateAdvice(bmi, hasWHRData, bmiRisk, selectedGender, needWeightLoss);
+            updateAdvice(advice);
+            
+            // 显示风险评估
+            updateRiskAssessment(bmiRisk, hasWHRData);
+            
+            // 显示吃着瘦方案推荐（如果需要减重）
+            if (needWeightLoss) {
+                showProgramRecommendation(weight);
+            } else {
+                document.getElementById('programRecommendation').style.display = 'none';
+            }
+            
+            // 显示结果区域
+            document.getElementById('resultSection').style.display = 'block';
+        }
+        
+        function calculateAndDisplayWHR(waist, hip) {
+            // 计算腰臀比
+            const whr = waist / hip;
+            const roundedWHR = whr.toFixed(2);
             
             // 确定腰臀比分类（基于WHO标准，区分男女）
             let whrCategory, whrColor, whrRisk;
@@ -562,31 +599,43 @@
                 }
             }
             
-            document.getElementById('bmiCategory').textContent = bmiCategory;
-            document.getElementById('bmiCategory').style.color = bmiColor;
-            document.getElementById('whrCategory').textContent = whrCategory;
+            // 添加腰臀比卡片到指标网格
+            const indicatorsGrid = document.getElementById('indicatorsGrid');
+            if (!document.getElementById('whrCard')) {
+                const whrCard = document.createElement('div');
+                whrCard.className = 'indicator-card';
+                whrCard.id = 'whrCard';
+                whrCard.innerHTML = `
+                    <div class="indicator-title">腰臀比</div>
+                    <div class="indicator-value" id="whrValue">${roundedWHR}</div>
+                    <div class="indicator-category" id="whrCategory">${whrCategory}</div>
+                `;
+                indicatorsGrid.appendChild(whrCard);
+            } else {
+                document.getElementById('whrValue').textContent = roundedWHR;
+                document.getElementById('whrCategory').textContent = whrCategory;
+            }
             document.getElementById('whrCategory').style.color = whrColor;
             
-            // 更新度量器
-            updateBMIGauge(bmi);
+            // 添加腰臀比度量器区域
+            const whrSection = document.getElementById('whrSection');
+            whrSection.innerHTML = `
+                <div>
+                    <div class="indicator-title">腰臀比指标</div>
+                    <div class="gauge-container">
+                        <div class="gauge-fill" id="whrGaugeFill"></div>
+                        <div class="gauge-marker" id="whrGaugeMarker"></div>
+                    </div>
+                    <div class="gauge-labels">
+                        <span>低风险</span>
+                        <span>中等风险</span>
+                        <span>高风险</span>
+                    </div>
+                </div>
+            `;
+            
+            // 更新腰臀比度量器
             updateWHRGauge(whr);
-            
-            // 生成综合建议和风险评估
-            const advice = generateAdvice(bmi, whr, bmiRisk, whrRisk, selectedGender, needWeightLoss);
-            updateAdvice(advice);
-            
-            // 显示风险评估
-            updateRiskAssessment(bmiRisk, whrRisk);
-            
-            // 显示吃着瘦方案推荐（如果需要减重）
-            if (needWeightLoss) {
-                showProgramRecommendation(weight);
-            } else {
-                document.getElementById('programRecommendation').style.display = 'none';
-            }
-            
-            // 显示结果区域
-            document.getElementById('resultSection').style.display = 'block';
         }
         
         function showProgramRecommendation(weight) {
@@ -654,7 +703,7 @@
             }
         }
         
-        function generateAdvice(bmi, whr, bmiRisk, whrRisk, gender, needWeightLoss) {
+        function generateAdvice(bmi, hasWHRData, bmiRisk, gender, needWeightLoss) {
             const advice = [];
             const genderText = gender === 'male' ? '男性' : '女性';
             
@@ -671,41 +720,44 @@
                 advice.push('设定合理的减重目标（每周0.5-1kg）');
             }
             
-            // 腰臀比相关建议
-            if (whrRisk === '高') {
-                advice.push(`作为${genderText}，您的腰臀比偏高，建议重点减少腹部脂肪`);
-                advice.push('增加核心肌群训练，如平板支撑、仰卧起坐');
-                advice.push('减少精制碳水化合物和含糖饮料的摄入');
-            } else if (whrRisk === '中') {
-                advice.push(`作为${genderText}，您的腰臀比处于中等风险，需要注意腹部脂肪控制`);
-                advice.push('建议增加膳食纤维摄入，多吃蔬菜水果');
+            // 腰臀比相关建议（如果有数据）
+            if (hasWHRData) {
+                advice.push(`作为${genderText}，建议关注腰臀比指标，控制腹部脂肪`);
+                advice.push('增加核心肌群训练，减少精制碳水化合物摄入');
+            } else {
+                advice.push('建议测量腰围和臀围，了解腰臀比指标');
+                advice.push('腰臀比是评估健康风险的重要指标');
             }
             
             // 综合建议
-            if (bmiRisk === '高' && whrRisk === '高') {
+            if (bmiRisk === '高') {
                 advice.push('您的健康风险较高，建议咨询专业营养师制定个性化方案');
             }
             
-            advice.push('定期监测体重和腰围变化，及时调整生活方式');
+            advice.push('定期监测体重变化，及时调整生活方式');
             advice.push('保持充足睡眠，减少压力，有助于体重管理');
             
             return advice;
         }
         
-        function updateRiskAssessment(bmiRisk, whrRisk) {
+        function updateRiskAssessment(bmiRisk, hasWHRData) {
             const riskContent = document.getElementById('riskContent');
             let riskLevel = '低';
             let riskDescription = '';
             
-            if (bmiRisk === '高' || whrRisk === '高') {
+            if (bmiRisk === '高') {
                 riskLevel = '高';
                 riskDescription = '您的心血管疾病和代谢疾病风险较高，建议尽快采取干预措施';
-            } else if (bmiRisk === '中' || whrRisk === '中') {
+            } else if (bmiRisk === '中') {
                 riskLevel = '中';
                 riskDescription = '您存在一定的健康风险，建议改善生活方式以降低风险';
             } else {
                 riskLevel = '低';
                 riskDescription = '您的健康状况良好，继续保持健康的生活方式';
+            }
+            
+            if (!hasWHRData) {
+                riskDescription += '（建议补充腰臀比数据获得更全面评估）';
             }
             
             riskContent.textContent = `综合风险等级：${riskLevel}。${riskDescription}`;
@@ -734,7 +786,7 @@
             document.body.removeChild(textArea);
             
             // 创建自定义弹窗
-            const message = `已将微信号 <strong>${wechatId}</strong> 复制到剪贴板，您可以直接在微信添加联系人中粘贴。<br><br>同时也欢迎您关注我们的公众号：<span class="wechat-link" onclick="openWechatOfficial()">吃着瘦</span>`;
+            const message = `已将微信号 <strong>${wechatId}</strong> 复制到剪贴板，您可以直接在微信添加联系人中粘贴。<br><br>同时也欢迎您关注我们的公众号和商城，公众号名：<strong>吃着瘦</strong>，商城名：<strong>美新格吃着瘦</strong>，在微信搜索栏搜索即可，或扫描以下二维码：`;
             
             // 创建弹窗
             const modal = document.createElement('div');
@@ -753,13 +805,31 @@
             modalContent.style.background = 'white';
             modalContent.style.padding = '25px';
             modalContent.style.borderRadius = '12px';
-            modalContent.style.maxWidth = '80%';
+            modalContent.style.maxWidth = '90%';
+            modalContent.style.maxHeight = '80vh';
+            modalContent.style.overflowY = 'auto';
             modalContent.style.textAlign = 'center';
             modalContent.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
             
             modalContent.innerHTML = `
                 <h3 style="color: #8B572A; margin-bottom: 15px;">联系我们</h3>
                 <div style="line-height: 1.6; margin-bottom: 20px; text-align: left;">${message}</div>
+                
+                <div style="display: flex; justify-content: space-around; gap: 20px; margin: 20px 0; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <img src="gzhqr.jpg" alt="吃着瘦公众号二维码" style="width: 120px; height: 120px; border: 2px solid #8B572A; border-radius: 8px; margin-bottom: 8px; object-fit: cover;" onerror="this.style.display='none'">
+                        <div style="font-size: 12px; color: #8B572A; font-weight: bold;">公众号二维码</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <img src="shopqr.jpg" alt="美新格吃着瘦商城二维码" style="width: 120px; height: 120px; border: 2px solid #8B572A; border-radius: 8px; margin-bottom: 8px; object-fit: cover;" onerror="this.style.display='none'">
+                        <div style="font-size: 12px; color: #8B572A; font-weight: bold;">商城二维码</div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 12px; color: #666; margin-top: 15px;">
+                    保存二维码图片到相册，然后在微信扫一扫中打开
+                </div>
+                
                 <button onclick="this.parentElement.parentElement.remove()" style="
                     padding: 10px 20px;
                     background: #8B572A;
@@ -767,6 +837,7 @@
                     border: none;
                     border-radius: 6px;
                     cursor: pointer;
+                    margin-top: 15px;
                 ">确定</button>
             `;
             
@@ -774,12 +845,9 @@
             document.body.appendChild(modal);
         }
         
-        function openWechatOfficial() {
-            window.open('https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzkxNjM2MDg3Ng==', '_blank');
-        }
-        
         function resetCalculator() {
             selectedGender = '';
+            hasWHRData = false;
             document.getElementById('maleBtn').classList.remove('active');
             document.getElementById('femaleBtn').classList.remove('active');
             document.getElementById('height').value = '';
@@ -787,6 +855,12 @@
             document.getElementById('waist').value = '';
             document.getElementById('hip').value = '';
             document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('indicatorsGrid').classList.remove('full');
+            // 清除动态添加的腰臀比卡片
+            const whrCard = document.getElementById('whrCard');
+            if (whrCard) {
+                whrCard.remove();
+            }
         }
         
         // 支持按Enter键计算
