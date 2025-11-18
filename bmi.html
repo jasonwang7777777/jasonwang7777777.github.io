@@ -324,25 +324,27 @@
             padding: 20px;
             border-radius: 10px;
             margin: 20px 0;
-            text-align: center;
+            text-align: left;
         }
         
         .program-title {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 10px;
+            text-align: center;
         }
         
         .program-desc {
             font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 15px;
+            line-height: 1.6;
+            margin-bottom: 0;
         }
         
         .wechat-link {
             color: #1890ff;
             text-decoration: underline;
             cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -433,17 +435,17 @@
                 <div class="risk-content" id="riskContent">--</div>
             </div>
             
-            <!-- 吃着瘦方案推荐 -->
-            <div class="program-recommendation" id="programRecommendation" style="display: none;">
-                <div class="program-title">💫 专属减重方案推荐</div>
-                <div class="program-desc" id="programDesc"></div>
-            </div>
-            
             <div class="advice-section">
                 <h3>健康建议</h3>
                 <ul class="advice-list" id="adviceList">
                     <!-- 建议内容将通过JavaScript动态生成 -->
                 </ul>
+            </div>
+            
+            <!-- 吃着瘦方案推荐 - 移动到健康建议下面 -->
+            <div class="program-recommendation" id="programRecommendation" style="display: none;">
+                <div class="program-title">💫 专属减重方案推荐</div>
+                <div class="program-desc" id="programDesc"></div>
             </div>
             
             <div class="button-row">
@@ -588,9 +590,11 @@
         }
         
         function showProgramRecommendation(weight) {
-            const minLoss = Math.round(weight * 0.05);
-            const maxLoss = Math.round(weight * 0.10);
-            const programDesc = `吃着瘦，不节食不运动，40天舒适瘦${minLoss}-${maxLoss}斤，在联系我们按钮里可以联络到我们，欢迎您一起健康享瘦`;
+            // 计算目标体重范围（5%-10%减重）
+            const minTargetWeight = (weight * 0.90).toFixed(1);
+            const maxTargetWeight = (weight * 0.95).toFixed(1);
+            
+            const programDesc = `我们的"吃着瘦"方案，在不运动不节食的情况下，40天由营养师一对一带领您优化饮食和调整代谢。可让您目前的体重由${weight}公斤降低到${minTargetWeight}-${maxTargetWeight}公斤。而且通过这种方式是绝对健康的不会反弹。在下面联系我们按钮可以详细沟通。`;
             
             document.getElementById('programDesc').textContent = programDesc;
             document.getElementById('programRecommendation').style.display = 'block';
@@ -665,11 +669,6 @@
                 advice.push('建议控制饮食，减少高热量食物摄入');
                 advice.push('增加有氧运动，如快走、游泳、骑自行车等');
                 advice.push('设定合理的减重目标（每周0.5-1kg）');
-                
-                // 如果需要减重，添加吃着瘦推荐
-                if (needWeightLoss) {
-                    advice.push('推荐尝试"吃着瘦"方案，不节食不运动，舒适健康减重');
-                }
             }
             
             // 腰臀比相关建议
@@ -685,7 +684,6 @@
             // 综合建议
             if (bmiRisk === '高' && whrRisk === '高') {
                 advice.push('您的健康风险较高，建议咨询专业营养师制定个性化方案');
-                advice.push('可以考虑参加专业的减重指导服务，获得系统支持');
             }
             
             advice.push('定期监测体重和腰围变化，及时调整生活方式');
@@ -736,7 +734,7 @@
             document.body.removeChild(textArea);
             
             // 创建自定义弹窗
-            const message = `已将微信号 ${wechatId} 复制到剪贴板，您可以直接在微信添加联系人中粘贴。\n\n同时也欢迎您关注我们的公众号：<span class="wechat-link" onclick="openWechatOfficial()">吃着瘦</span>`;
+            const message = `已将微信号 <strong>${wechatId}</strong> 复制到剪贴板，您可以直接在微信添加联系人中粘贴。<br><br>同时也欢迎您关注我们的公众号：<span class="wechat-link" onclick="openWechatOfficial()">吃着瘦</span>`;
             
             // 创建弹窗
             const modal = document.createElement('div');
@@ -761,7 +759,7 @@
             
             modalContent.innerHTML = `
                 <h3 style="color: #8B572A; margin-bottom: 15px;">联系我们</h3>
-                <div style="line-height: 1.6; margin-bottom: 20px;">${message}</div>
+                <div style="line-height: 1.6; margin-bottom: 20px; text-align: left;">${message}</div>
                 <button onclick="this.parentElement.parentElement.remove()" style="
                     padding: 10px 20px;
                     background: #8B572A;
