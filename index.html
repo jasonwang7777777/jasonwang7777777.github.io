@@ -32,12 +32,18 @@
             flex-direction: column;
         }
         
+        .header {
+            position: relative;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        
         .logo {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 60px;
-            height: 60px;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(139, 87, 42, 0.2);
@@ -49,24 +55,37 @@
             object-fit: cover;
         }
         
+        .title-section {
+            position: absolute;
+            top: 25px;
+            left: 0;
+            right: 90px;
+        }
+        
         h2 {
-            text-align: center;
             color: #8B572A;
-            margin-bottom: 20px;
-            padding-right: 70px;
-            font-size: 18px;
+            font-size: 20px;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #8B572A;
+            font-size: 14px;
+            opacity: 0.8;
         }
         
         #searchInput {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             font-size: 16px;
             border: 1px solid #d4b896;
-            border-radius: 8px;
+            border-radius: 10px;
             box-sizing: border-box;
             background-color: #fefaf5;
             color: #5a4a42;
             transition: all 0.3s;
+            margin-bottom: 20px;
         }
         
         #searchInput:focus {
@@ -76,11 +95,10 @@
         }
         
         #instructions {
-            margin-top: 20px;
-            padding: 15px;
+            padding: 18px;
             background-color: #f9f1e7;
             border: 1px solid #e6d5c3;
-            border-radius: 8px;
+            border-radius: 10px;
             flex: 1;
             overflow-y: auto;
         }
@@ -88,8 +106,9 @@
         #instructions h3 {
             margin-top: 0;
             color: #8B572A;
-            margin-bottom: 12px;
-            font-size: 16px;
+            margin-bottom: 15px;
+            font-size: 17px;
+            text-align: center;
         }
         
         #instructions ul {
@@ -97,35 +116,37 @@
         }
         
         #instructions li {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             font-size: 14px;
+            line-height: 1.5;
         }
         
         #result {
-            margin-top: 15px;
-            padding: 15px;
+            padding: 18px;
             background-color: #f9f1e7;
             border: 1px dashed #d4b896;
-            border-radius: 8px;
+            border-radius: 10px;
             white-space: pre-wrap;
             word-wrap: break-word;
             display: none;
             flex: 1;
             overflow-y: auto;
             font-size: 14px;
+            line-height: 1.5;
         }
         
         #copyBtn {
             margin-top: 15px;
-            padding: 14px;
+            padding: 16px;
             background-color: #8B572A;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             display: none;
             width: 100%;
             font-size: 16px;
+            font-weight: bold;
             transition: background-color 0.3s;
         }
         
@@ -135,30 +156,62 @@
         
         .contact-btn {
             margin-top: 15px;
-            padding: 14px;
+            padding: 16px;
             background-color: #5a4a42;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
             font-size: 16px;
+            font-weight: bold;
             transition: background-color 0.3s;
         }
         
         .contact-btn:hover {
             background-color: #3e332d;
         }
+        
+        /* 响应式调整 */
+        @media (max-height: 700px) {
+            .header {
+                height: 80px;
+                margin-bottom: 15px;
+            }
+            
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .title-section {
+                top: 20px;
+                right: 80px;
+            }
+            
+            h2 {
+                font-size: 18px;
+            }
+            
+            .subtitle {
+                font-size: 13px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Logo区域 -->
-        <div class="logo">
-            <img src="logo.jpg" alt="吃着瘦Logo" onerror="this.style.display='none'">
+        <!-- 头部区域 -->
+        <div class="header">
+            <div class="logo">
+                <img src="logo.jpg" alt="吃着瘦Logo" onerror="this.style.display='none'">
+            </div>
+            <div class="title-section">
+                <h2>吃着瘦服务SOP查询工具</h2>
+                <div class="subtitle">快速查询 · 一键复制 · 高效服务</div>
+            </div>
         </div>
         
-        <h2>吃着瘦服务SOP查询工具</h2>
         <input type="text" id="searchInput" placeholder="输入代码后一键复制话术">
         
         <!-- 说明区域 -->
