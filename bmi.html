@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BMI计算器 - 吃着瘦</title>
+    <title>健康指标计算器 - 吃着瘦</title>
     <style>
         * {
             margin: 0;
@@ -27,13 +27,32 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(139, 87, 42, 0.15);
+            position: relative;
+        }
+        
+        .logo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(139, 87, 42, 0.2);
+        }
+        
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         h1 {
             text-align: center;
             color: #8B572A;
             margin-bottom: 10px;
-            font-size: 24px;
+            font-size: 22px;
+            padding-right: 70px;
         }
         
         .subtitle {
@@ -42,6 +61,7 @@
             margin-bottom: 25px;
             opacity: 0.8;
             font-size: 14px;
+            padding-right: 70px;
         }
         
         .input-group {
@@ -58,19 +78,45 @@
             flex: 1;
         }
         
+        .gender-selection {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .gender-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e6d5c3;
+            border-radius: 8px;
+            background: #fefaf5;
+            color: #5a4a42;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .gender-btn.active {
+            background: #8B572A;
+            color: white;
+            border-color: #8B572A;
+        }
+        
         label {
             display: block;
             margin-bottom: 8px;
             color: #8B572A;
             font-weight: 500;
+            font-size: 14px;
         }
         
         input {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             font-size: 16px;
             border: 2px solid #e6d5c3;
-            border-radius: 10px;
+            border-radius: 8px;
             background-color: #fefaf5;
             color: #5a4a42;
             transition: all 0.3s;
@@ -103,41 +149,56 @@
         
         .result-section {
             display: none;
-            text-align: center;
         }
         
-        .bmi-value {
-            font-size: 48px;
+        .indicators-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .indicator-card {
+            background: #f9f1e7;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid #e6d5c3;
+        }
+        
+        .indicator-title {
+            font-size: 14px;
+            color: #8B572A;
+            margin-bottom: 8px;
+        }
+        
+        .indicator-value {
+            font-size: 24px;
             font-weight: bold;
             color: #8B572A;
-            margin: 15px 0;
+            margin-bottom: 5px;
         }
         
-        .bmi-category {
-            font-size: 20px;
+        .indicator-category {
+            font-size: 14px;
             font-weight: bold;
-            margin-bottom: 25px;
         }
         
         /* 度量器样式 */
         .gauge-container {
             width: 100%;
-            height: 30px;
+            height: 25px;
             background: #f0f0f0;
-            border-radius: 15px;
-            margin: 25px 0;
+            border-radius: 12px;
+            margin: 15px 0;
             overflow: hidden;
             position: relative;
         }
         
         .gauge-fill {
             height: 100%;
-            border-radius: 15px;
+            border-radius: 12px;
             transition: all 1s ease;
-            background: linear-gradient(90deg, 
-                #2ecc71 0%, 
-                #f1c40f 50%, 
-                #e74c3c 100%);
             width: 0%;
         }
         
@@ -145,7 +206,7 @@
             position: absolute;
             top: -5px;
             width: 3px;
-            height: 40px;
+            height: 35px;
             background: rgba(0,0,0,0.5);
             transform: translateX(-50%);
         }
@@ -153,8 +214,8 @@
         .gauge-labels {
             display: flex;
             justify-content: space-between;
-            margin-top: 8px;
-            font-size: 12px;
+            margin-top: 5px;
+            font-size: 11px;
             color: #666;
         }
         
@@ -162,13 +223,14 @@
             background: #f9f1e7;
             padding: 20px;
             border-radius: 10px;
-            margin-top: 25px;
+            margin-top: 20px;
             border-left: 4px solid #8B572A;
         }
         
         .advice-section h3 {
             color: #8B572A;
             margin-bottom: 12px;
+            font-size: 16px;
         }
         
         .advice-list {
@@ -177,9 +239,10 @@
         }
         
         .advice-list li {
-            margin-bottom: 10px;
-            padding-left: 20px;
+            margin-bottom: 8px;
+            padding-left: 18px;
             position: relative;
+            font-size: 14px;
         }
         
         .advice-list li:before {
@@ -187,11 +250,17 @@
             color: #8B572A;
             position: absolute;
             left: 0;
-            font-size: 18px;
+            font-size: 16px;
+        }
+        
+        .button-row {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
         
         .reset-btn {
-            width: 100%;
+            flex: 1;
             padding: 14px;
             background: transparent;
             color: #8B572A;
@@ -200,21 +269,100 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
-            margin-top: 20px;
         }
         
         .reset-btn:hover {
             background: #8B572A;
             color: white;
         }
+        
+        .contact-btn {
+            flex: 1;
+            padding: 14px;
+            background: #8B572A;
+            color: white;
+            border: 2px solid #8B572A;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .contact-btn:hover {
+            background: #6d4220;
+            border-color: #6d4220;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(139, 87, 42, 0.3);
+        }
+        
+        .risk-assessment {
+            background: #fff9f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #ffd8a6;
+        }
+        
+        .risk-title {
+            color: #e67e22;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .risk-content {
+            font-size: 13px;
+            color: #5a4a42;
+        }
+        
+        .program-recommendation {
+            background: linear-gradient(135deg, #8B572A 0%, #6d4220 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .program-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .program-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .wechat-link {
+            color: #1890ff;
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>BMI计算器</h1>
-        <div class="subtitle">了解您的身体质量指数，开启健康生活</div>
+        <!-- Logo区域 -->
+        <div class="logo">
+            <img src="logo.jpg" alt="吃着瘦Logo" onerror="this.style.display='none'">
+        </div>
+        
+        <h1>健康指标计算器</h1>
+        <div class="subtitle">全面评估您的健康状况</div>
         
         <div class="input-group">
+            <!-- 性别选择 -->
+            <div class="gender-selection">
+                <div class="gender-btn" onclick="selectGender('male')" id="maleBtn">男性</div>
+                <div class="gender-btn" onclick="selectGender('female')" id="femaleBtn">女性</div>
+            </div>
+            
             <div class="input-row">
                 <div class="input-item">
                     <label for="height">身高 (cm)</label>
@@ -225,23 +373,70 @@
                     <input type="number" id="weight" placeholder="请输入体重" min="20" max="200">
                 </div>
             </div>
+            <div class="input-row">
+                <div class="input-item">
+                    <label for="waist">腰围 (cm)</label>
+                    <input type="number" id="waist" placeholder="请输入腰围" min="50" max="150">
+                </div>
+                <div class="input-item">
+                    <label for="hip">臀围 (cm)</label>
+                    <input type="number" id="hip" placeholder="请输入臀围" min="60" max="200">
+                </div>
+            </div>
         </div>
         
-        <button class="calculate-btn" onclick="calculateBMI()">计算BMI</button>
+        <button class="calculate-btn" onclick="calculateHealthIndicators()">计算健康指标</button>
         
         <div class="result-section" id="resultSection">
-            <div class="bmi-value" id="bmiValue">--</div>
-            <div class="bmi-category" id="bmiCategory">--</div>
-            
-            <div class="gauge-container">
-                <div class="gauge-fill" id="gaugeFill"></div>
-                <div class="gauge-marker" id="gaugeMarker"></div>
+            <div class="indicators-grid">
+                <div class="indicator-card">
+                    <div class="indicator-title">BMI指数</div>
+                    <div class="indicator-value" id="bmiValue">--</div>
+                    <div class="indicator-category" id="bmiCategory">--</div>
+                </div>
+                <div class="indicator-card">
+                    <div class="indicator-title">腰臀比</div>
+                    <div class="indicator-value" id="whrValue">--</div>
+                    <div class="indicator-category" id="whrCategory">--</div>
+                </div>
             </div>
-            <div class="gauge-labels">
-                <span>偏瘦</span>
-                <span>正常</span>
-                <span>超重</span>
-                <span>肥胖</span>
+            
+            <div>
+                <div class="indicator-title">BMI指标</div>
+                <div class="gauge-container">
+                    <div class="gauge-fill" id="bmiGaugeFill"></div>
+                    <div class="gauge-marker" id="bmiGaugeMarker"></div>
+                </div>
+                <div class="gauge-labels">
+                    <span>偏瘦</span>
+                    <span>正常</span>
+                    <span>超重</span>
+                    <span>肥胖</span>
+                </div>
+            </div>
+            
+            <div>
+                <div class="indicator-title">腰臀比指标</div>
+                <div class="gauge-container">
+                    <div class="gauge-fill" id="whrGaugeFill"></div>
+                    <div class="gauge-marker" id="whrGaugeMarker"></div>
+                </div>
+                <div class="gauge-labels">
+                    <span>低风险</span>
+                    <span>中等风险</span>
+                    <span>高风险</span>
+                </div>
+            </div>
+            
+            <div class="risk-assessment" id="riskAssessment">
+                <div class="risk-title">健康风险评估</div>
+                <div class="risk-content" id="riskContent">--</div>
+            </div>
+            
+            <!-- 吃着瘦方案推荐 -->
+            <div class="program-recommendation" id="programRecommendation" style="display: none;">
+                <div class="program-title">💫 专属减重方案推荐</div>
+                <div class="program-desc" id="programDesc"></div>
             </div>
             
             <div class="advice-section">
@@ -251,17 +446,45 @@
                 </ul>
             </div>
             
-            <button class="reset-btn" onclick="resetCalculator()">重新计算</button>
+            <div class="button-row">
+                <button class="reset-btn" onclick="resetCalculator()">重新计算</button>
+                <button class="contact-btn" onclick="contactUs()">联系我们</button>
+            </div>
         </div>
     </div>
 
     <script>
-        function calculateBMI() {
+        let selectedGender = '';
+        let currentWeight = 0;
+        
+        function selectGender(gender) {
+            selectedGender = gender;
+            document.getElementById('maleBtn').classList.remove('active');
+            document.getElementById('femaleBtn').classList.remove('active');
+            document.getElementById(gender + 'Btn').classList.add('active');
+        }
+        
+        function calculateHealthIndicators() {
             const height = parseFloat(document.getElementById('height').value);
             const weight = parseFloat(document.getElementById('weight').value);
+            const waist = parseFloat(document.getElementById('waist').value);
+            const hip = parseFloat(document.getElementById('hip').value);
+            
+            currentWeight = weight;
+            
+            // 验证输入
+            if (!selectedGender) {
+                alert('请选择性别');
+                return;
+            }
             
             if (!height || !weight || height < 100 || height > 250 || weight < 20 || weight > 200) {
                 alert('请输入有效的身高（100-250cm）和体重（20-200kg）数值');
+                return;
+            }
+            
+            if (!waist || !hip || waist < 50 || waist > 150 || hip < 60 || hip > 200) {
+                alert('请输入有效的腰围（50-150cm）和臀围（60-200cm）数值');
                 return;
             }
             
@@ -270,77 +493,123 @@
             const bmi = weight / (heightInMeter * heightInMeter);
             const roundedBMI = bmi.toFixed(1);
             
+            // 计算腰臀比
+            const whr = waist / hip;
+            const roundedWHR = whr.toFixed(2);
+            
             // 显示结果
             document.getElementById('bmiValue').textContent = roundedBMI;
+            document.getElementById('whrValue').textContent = roundedWHR;
             
-            // 确定BMI分类和建议
-            let category, color, advice;
-            
+            // 确定BMI分类
+            let bmiCategory, bmiColor, bmiRisk, needWeightLoss;
             if (bmi < 18.5) {
-                category = '体重偏轻';
-                color = '#e74c3c';
-                advice = [
-                    '建议适当增加营养摄入，保持均衡饮食',
-                    '可以适当增加优质蛋白质的摄入',
-                    '结合适量力量训练，增加肌肉量',
-                    '保持规律作息，避免过度劳累'
-                ];
+                bmiCategory = '体重偏轻';
+                bmiColor = '#e74c3c';
+                bmiRisk = '低';
+                needWeightLoss = false;
             } else if (bmi < 24) {
-                category = '体重正常';
-                color = '#2ecc71';
-                advice = [
-                    '恭喜！您的体重在健康范围内',
-                    '继续保持均衡饮食和适量运动',
-                    '定期监测体重变化',
-                    '维持健康的生活方式'
-                ];
+                bmiCategory = '体重正常';
+                bmiColor = '#2ecc71';
+                bmiRisk = '低';
+                needWeightLoss = false;
             } else if (bmi < 28) {
-                category = '超重';
-                color = '#f39c12';
-                advice = [
-                    '建议适当控制饮食，减少高热量食物',
-                    '增加有氧运动，如快走、游泳等',
-                    '设定合理的减重目标（每周0.5-1kg）',
-                    '注意饮食结构，多吃蔬菜水果'
-                ];
+                bmiCategory = '超重';
+                bmiColor = '#f39c12';
+                bmiRisk = '中';
+                needWeightLoss = true;
             } else {
-                category = '肥胖';
-                color = '#e74c3c';
-                advice = [
-                    '建议咨询专业营养师制定减重计划',
-                    '严格控制饮食，减少高糖高脂食物',
-                    '增加运动量，建议每周150分钟中等强度运动',
-                    '可以考虑参加专业的减重指导服务'
-                ];
+                bmiCategory = '肥胖';
+                bmiColor = '#e74c3c';
+                bmiRisk = '高';
+                needWeightLoss = true;
             }
             
-            document.getElementById('bmiCategory').textContent = category;
-            document.getElementById('bmiCategory').style.color = color;
+            // 确定腰臀比分类（基于WHO标准，区分男女）
+            let whrCategory, whrColor, whrRisk;
+            
+            if (selectedGender === 'male') {
+                // 男性标准
+                if (whr < 0.95) {
+                    whrCategory = '低风险';
+                    whrColor = '#2ecc71';
+                    whrRisk = '低';
+                } else if (whr < 1.0) {
+                    whrCategory = '中等风险';
+                    whrColor = '#f39c12';
+                    whrRisk = '中';
+                } else {
+                    whrCategory = '高风险';
+                    whrColor = '#e74c3c';
+                    whrRisk = '高';
+                }
+            } else {
+                // 女性标准
+                if (whr < 0.85) {
+                    whrCategory = '低风险';
+                    whrColor = '#2ecc71';
+                    whrRisk = '低';
+                } else if (whr < 0.90) {
+                    whrCategory = '中等风险';
+                    whrColor = '#f39c12';
+                    whrRisk = '中';
+                } else {
+                    whrCategory = '高风险';
+                    whrColor = '#e74c3c';
+                    whrRisk = '高';
+                }
+            }
+            
+            document.getElementById('bmiCategory').textContent = bmiCategory;
+            document.getElementById('bmiCategory').style.color = bmiColor;
+            document.getElementById('whrCategory').textContent = whrCategory;
+            document.getElementById('whrCategory').style.color = whrColor;
             
             // 更新度量器
-            updateGauge(bmi);
+            updateBMIGauge(bmi);
+            updateWHRGauge(whr);
             
-            // 更新建议
+            // 生成综合建议和风险评估
+            const advice = generateAdvice(bmi, whr, bmiRisk, whrRisk, selectedGender, needWeightLoss);
             updateAdvice(advice);
+            
+            // 显示风险评估
+            updateRiskAssessment(bmiRisk, whrRisk);
+            
+            // 显示吃着瘦方案推荐（如果需要减重）
+            if (needWeightLoss) {
+                showProgramRecommendation(weight);
+            } else {
+                document.getElementById('programRecommendation').style.display = 'none';
+            }
             
             // 显示结果区域
             document.getElementById('resultSection').style.display = 'block';
         }
         
-        function updateGauge(bmi) {
-            const gaugeFill = document.getElementById('gaugeFill');
-            const gaugeMarker = document.getElementById('gaugeMarker');
+        function showProgramRecommendation(weight) {
+            const minLoss = Math.round(weight * 0.05);
+            const maxLoss = Math.round(weight * 0.10);
+            const programDesc = `吃着瘦，不节食不运动，40天舒适瘦${minLoss}-${maxLoss}斤，在联系我们按钮里可以联络到我们，欢迎您一起健康享瘦`;
+            
+            document.getElementById('programDesc').textContent = programDesc;
+            document.getElementById('programRecommendation').style.display = 'block';
+        }
+        
+        function updateBMIGauge(bmi) {
+            const gaugeFill = document.getElementById('bmiGaugeFill');
+            const gaugeMarker = document.getElementById('bmiGaugeMarker');
             
             // BMI范围：15-40，对应0-100%
             let percentage = ((bmi - 15) / (40 - 15)) * 100;
-            percentage = Math.max(0, Math.min(100, percentage)); // 限制在0-100%
+            percentage = Math.max(0, Math.min(100, percentage));
             
             gaugeFill.style.width = percentage + '%';
             gaugeMarker.style.left = percentage + '%';
             
             // 根据BMI值调整颜色
             if (bmi < 18.5) {
-                gaugeFill.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f1c40f 100%)';
+                gaugeFill.style.background = 'linear-gradient(90deg, #e74c3c 0%, #f1c40f 50%)';
             } else if (bmi < 24) {
                 gaugeFill.style.background = 'linear-gradient(90deg, #2ecc71 0%, #f1c40f 100%)';
             } else if (bmi < 28) {
@@ -348,6 +617,100 @@
             } else {
                 gaugeFill.style.background = 'linear-gradient(90deg, #e67e22 0%, #e74c3c 100%)';
             }
+        }
+        
+        function updateWHRGauge(whr) {
+            const gaugeFill = document.getElementById('whrGaugeFill');
+            const gaugeMarker = document.getElementById('whrGaugeMarker');
+            
+            // 腰臀比范围：0.6-1.2，对应0-100%
+            let percentage = ((whr - 0.6) / (1.2 - 0.6)) * 100;
+            percentage = Math.max(0, Math.min(100, percentage));
+            
+            gaugeFill.style.width = percentage + '%';
+            gaugeMarker.style.left = percentage + '%';
+            
+            // 根据腰臀比调整颜色
+            if (selectedGender === 'male') {
+                if (whr < 0.95) {
+                    gaugeFill.style.background = 'linear-gradient(90deg, #2ecc71 0%, #f1c40f 50%)';
+                } else if (whr < 1.0) {
+                    gaugeFill.style.background = 'linear-gradient(90deg, #f1c40f 0%, #e67e22 100%)';
+                } else {
+                    gaugeFill.style.background = 'linear-gradient(90deg, #e67e22 0%, #e74c3c 100%)';
+                }
+            } else {
+                if (whr < 0.85) {
+                    gaugeFill.style.background = 'linear-gradient(90deg, #2ecc71 0%, #f1c40f 50%)';
+                } else if (whr < 0.90) {
+                    gaugeFill.style.background = 'linear-gradient(90deg, #f1c40f 0%, #e67e22 100%)';
+                } else {
+                    gaugeFill.style.background = 'linear-gradient(90deg, #e67e22 0%, #e74c3c 100%)';
+                }
+            }
+        }
+        
+        function generateAdvice(bmi, whr, bmiRisk, whrRisk, gender, needWeightLoss) {
+            const advice = [];
+            const genderText = gender === 'male' ? '男性' : '女性';
+            
+            // BMI相关建议
+            if (bmi < 18.5) {
+                advice.push('建议适当增加营养摄入，保持均衡饮食');
+                advice.push('可以适当增加优质蛋白质的摄入，如鸡蛋、牛奶、豆制品');
+            } else if (bmi < 24) {
+                advice.push('恭喜！您的体重在健康范围内，请继续保持');
+                advice.push('维持均衡饮食和规律运动的好习惯');
+            } else {
+                advice.push('建议控制饮食，减少高热量食物摄入');
+                advice.push('增加有氧运动，如快走、游泳、骑自行车等');
+                advice.push('设定合理的减重目标（每周0.5-1kg）');
+                
+                // 如果需要减重，添加吃着瘦推荐
+                if (needWeightLoss) {
+                    advice.push('推荐尝试"吃着瘦"方案，不节食不运动，舒适健康减重');
+                }
+            }
+            
+            // 腰臀比相关建议
+            if (whrRisk === '高') {
+                advice.push(`作为${genderText}，您的腰臀比偏高，建议重点减少腹部脂肪`);
+                advice.push('增加核心肌群训练，如平板支撑、仰卧起坐');
+                advice.push('减少精制碳水化合物和含糖饮料的摄入');
+            } else if (whrRisk === '中') {
+                advice.push(`作为${genderText}，您的腰臀比处于中等风险，需要注意腹部脂肪控制`);
+                advice.push('建议增加膳食纤维摄入，多吃蔬菜水果');
+            }
+            
+            // 综合建议
+            if (bmiRisk === '高' && whrRisk === '高') {
+                advice.push('您的健康风险较高，建议咨询专业营养师制定个性化方案');
+                advice.push('可以考虑参加专业的减重指导服务，获得系统支持');
+            }
+            
+            advice.push('定期监测体重和腰围变化，及时调整生活方式');
+            advice.push('保持充足睡眠，减少压力，有助于体重管理');
+            
+            return advice;
+        }
+        
+        function updateRiskAssessment(bmiRisk, whrRisk) {
+            const riskContent = document.getElementById('riskContent');
+            let riskLevel = '低';
+            let riskDescription = '';
+            
+            if (bmiRisk === '高' || whrRisk === '高') {
+                riskLevel = '高';
+                riskDescription = '您的心血管疾病和代谢疾病风险较高，建议尽快采取干预措施';
+            } else if (bmiRisk === '中' || whrRisk === '中') {
+                riskLevel = '中';
+                riskDescription = '您存在一定的健康风险，建议改善生活方式以降低风险';
+            } else {
+                riskLevel = '低';
+                riskDescription = '您的健康状况良好，继续保持健康的生活方式';
+            }
+            
+            riskContent.textContent = `综合风险等级：${riskLevel}。${riskDescription}`;
         }
         
         function updateAdvice(adviceList) {
@@ -361,16 +724,77 @@
             });
         }
         
+        function contactUs() {
+            const wechatId = 'chizheshou666';
+            
+            // 复制微信号到剪贴板
+            const textArea = document.createElement('textarea');
+            textArea.value = wechatId;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // 创建自定义弹窗
+            const message = `已将微信号 ${wechatId} 复制到剪贴板，您可以直接在微信添加联系人中粘贴。\n\n同时也欢迎您关注我们的公众号：<span class="wechat-link" onclick="openWechatOfficial()">吃着瘦</span>`;
+            
+            // 创建弹窗
+            const modal = document.createElement('div');
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+            modal.style.display = 'flex';
+            modal.style.justifyContent = 'center';
+            modal.style.alignItems = 'center';
+            modal.style.zIndex = '1000';
+            
+            const modalContent = document.createElement('div');
+            modalContent.style.background = 'white';
+            modalContent.style.padding = '25px';
+            modalContent.style.borderRadius = '12px';
+            modalContent.style.maxWidth = '80%';
+            modalContent.style.textAlign = 'center';
+            modalContent.style.boxShadow = '0 5px 20px rgba(0,0,0,0.2)';
+            
+            modalContent.innerHTML = `
+                <h3 style="color: #8B572A; margin-bottom: 15px;">联系我们</h3>
+                <div style="line-height: 1.6; margin-bottom: 20px;">${message}</div>
+                <button onclick="this.parentElement.parentElement.remove()" style="
+                    padding: 10px 20px;
+                    background: #8B572A;
+                    color: white;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                ">确定</button>
+            `;
+            
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+        }
+        
+        function openWechatOfficial() {
+            window.open('https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzkxNjM2MDg3Ng==', '_blank');
+        }
+        
         function resetCalculator() {
+            selectedGender = '';
+            document.getElementById('maleBtn').classList.remove('active');
+            document.getElementById('femaleBtn').classList.remove('active');
             document.getElementById('height').value = '';
             document.getElementById('weight').value = '';
+            document.getElementById('waist').value = '';
+            document.getElementById('hip').value = '';
             document.getElementById('resultSection').style.display = 'none';
         }
         
         // 支持按Enter键计算
         document.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
-                calculateBMI();
+                calculateHealthIndicators();
             }
         });
     </script>
