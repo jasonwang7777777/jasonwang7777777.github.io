@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吃着瘦 - 不运动不节食，40天健康舒适瘦8-15斤</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        body {
+            background-color: #fefaf6;
+            color: #5c4b37;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #a67c52;
+            transition: all 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #a67c52 0%, #d9b38c 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(166, 124, 82, 0.2);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(166, 124, 82, 0.3);
+        }
+        
+        section {
+            padding: 80px 0;
+        }
+        
+        h1, h2, h3 {
+            color: #5c4b37;
+            margin-bottom: 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background: rgba(254, 250, 246, 0.95);
+            box-shadow: 0 2px 10px rgba(92, 75, 55, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #a67c52;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            color: #5c4b37;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #a67c52;
+            transition: width 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #a67c52;
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            background: linear-gradient(135deg, #fefaf6 0%, #f5f0e8 100%);
+            padding: 150px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23d9b38c' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #a67c52;
+            position: relative;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #7a6854;
+        }
+        
+        .hero-btns {
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .hero-btns .btn {
+            margin: 0 10px;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #a67c52;
+            color: #a67c52;
+        }
+        
+        .btn-secondary:hover {
+            background: #a67c52;
+            color: white;
+        }
+        
+        /* 方案介绍 */
+        .program-intro {
+            background: white;
+            text-align: center;
+        }
+        
+        .program-intro h2 {
+            font-size: 36px;
+        }
+        
+        .program-intro p {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: #7a6854;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .feature {
+            flex: 1;
+            min-width: 250px;
+            margin: 20px;
+            padding: 40px 30px;
+            background: #fefaf6;
+            border-radius: 10px;
+            transition: all 0.3s;
+            border: 1px solid #f0e6db;
+            box-shadow: 0 5px 15px rgba(166, 124, 82, 0.05);
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(166, 124, 82, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 50px;
+            color: #a67c52;
+            margin-bottom: 20px;
+        }
+        
+        .feature h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .feature p {
+            color: #7a6854;
+        }
+        
+        /* 效果展示 */
+        .results {
+            background: #f5f0e8;
+            text-align: center;
+        }
+        
+        .results h2 {
+            font-size: 36px;
+        }
+        
+        .results p {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: #7a6854;
+        }
+        
+        .result-cards {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .result-card {
+            flex: 1;
+            min-width: 300px;
+            margin: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(92, 75, 55, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(92, 75, 55, 0.15);
+        }
+        
+        .result-img {
+            height: 200px;
+            background: #e6d5c3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a67c52;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .result-content {
+            padding: 25px;
+        }
+        
+        .result-content h3 {
+            color: #a67c52;
+            margin-bottom: 10px;
+        }
+        
+        .result-content p {
+            margin: 8px 0;
+            text-align: left;
+        }
+        
+        /* 用户评价 */
+        .testimonials {
+            background: white;
+            text-align: center;
+        }
+        
+        .testimonials h2 {
+            font-size: 36px;
+        }
+        
+        .testimonials p {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            color: #7a6854;
+        }
+        
+        .testimonial-cards {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .testimonial-card {
+            flex: 1;
+            min-width: 300px;
+            margin: 20px;
+            padding: 30px;
+            background: #fefaf6;
+            border-radius: 10px;
+            position: relative;
+            border: 1px solid #f0e6db;
+            box-shadow: 0 5px 15px rgba(166, 124, 82, 0.05);
+        }
+        
+        .testimonial-card:before {
+            content: """;
+            font-size: 80px;
+            color: #e6d5c3;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-family: serif;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #e6d5c3;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a67c52;
+            font-weight: bold;
+        }
+        
+        /* 行动号召 */
+        .cta {
+            background: linear-gradient(135deg, #a67c52 0%, #d9b38c 100%);
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+        
+        .cta h2 {
+            color: white;
+            font-size: 36px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .cta p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        .cta .btn {
+            background: white;
+            color: #a67c52;
+            position: relative;
+        }
+        
+        /* 页脚 */
+        footer {
+            background: #5c4b37;
+            color: #d9b38c;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin: 20px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #d9b38c;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(217, 179, 140, 0.2);
+            border-radius: 50%;
+            margin-right: 10px;
+            color: #d9b38c;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: #d9b38c;
+            color: #5c4b37;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #7a6854;
+            font-size: 14px;
+            color: #d9b38c;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+            
+            nav ul {
+                margin-top: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+            
+            .feature, .result-card, .testimonial-card {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    吃着瘦
+                </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#program">方案介绍</a></li>
+                    <li><a href="#results">效果展示</a></li>
+                    <li><a href="#testimonials">用户评价</a></li>
+                    <li><a href="#contact">联系我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>不运动，不节食，40天健康舒适瘦8-15斤</h1>
+            <p>专为忙碌都市人设计的科学饮食方案，让您在享受美食的同时轻松瘦身</p>
+            <div class="hero-btns">
+                <a href="#program" class="btn">了解方案</a>
+                <a href="#contact" class="btn btn-secondary">立即咨询</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 方案介绍 -->
+    <section class="program-intro" id="program">
+        <div class="container">
+            <h2>为什么选择"吃着瘦"？</h2>
+            <p>我们的科学饮食方案，让您无需忍受饥饿与疲惫，轻松实现健康减重</p>
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">🍽️</div>
+                    <h3>无需节食</h3>
+                    <p>科学配比，营养均衡，吃饱吃好也能瘦</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🏃‍♀️</div>
+                    <h3>无需运动</h3>
+                    <p>特别适合没时间运动的上班族和忙碌人群</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>40天见效</h3>
+                    <p>科学周期，健康舒适瘦8-15斤</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 效果展示 -->
+    <section class="results" id="results">
+        <div class="container">
+            <h2>真实效果展示</h2>
+            <p>看看我们的用户如何通过"吃着瘦"实现理想身材</p>
+            <div class="result-cards">
+                <div class="result-card">
+                    <div class="result-img">减重前</div>
+                    <div class="result-content">
+                        <h3>张女士，35岁</h3>
+                        <p>初始体重：65kg</p>
+                        <p>40天后体重：56kg</p>
+                        <p>减重：9kg</p>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <div class="result-img">减重前</div>
+                    <div class="result-content">
+                        <h3>李先生，42岁</h3>
+                        <p>初始体重：82kg</p>
+                        <p>40天后体重：72kg</p>
+                        <p>减重：10kg</p>
+                    </div>
+                </div>
+                <div class="result-card">
+                    <div class="result-img">减重前</div>
+                    <div class="result-content">
+                        <h3>王小姐，28岁</h3>
+                        <p>初始体重：58kg</p>
+                        <p>40天后体重：50kg</p>
+                        <p>减重：8kg</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 用户评价 -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2>用户真实评价</h2>
+            <p>听听成功减重的用户怎么说</p>
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <p>尝试过很多减肥方法都失败了，"吃着瘦"让我第一次在不节食的情况下成功减重10斤，而且整个过程非常舒适！</p>
+                    <div class="user-info">
+                        <div class="user-avatar">张</div>
+                        <div>
+                            <h4>张女士</h4>
+                            <p>减重10斤</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>作为一个上班族，真的没时间运动。"吃着瘦"的方案太适合我了，不用改变生活习惯就能瘦下来。</p>
+                    <div class="user-info">
+                        <div class="user-avatar">李</div>
+                        <div>
+                            <h4>李先生</h4>
+                            <p>减重12斤</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>以前节食减肥总是反弹，这次用"吃着瘦"已经三个月了，体重一直保持得很好，饮食习惯也健康了很多。</p>
+                    <div class="user-info">
+                        <div class="user-avatar">王</div>
+                        <div>
+                            <h4>王小姐</h4>
+                            <p>减重8斤</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 行动号召 -->
+    <section class="cta" id="contact">
+        <div class="container">
+            <h2>开始您的健康减重之旅</h2>
+            <p>立即咨询专业营养师，获取个性化饮食方案</p>
+            <a href="#" class="btn">立即咨询</a>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>吃着瘦</h3>
+                    <p>专业健康减重方案，让您在享受美食的同时轻松瘦身。</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>快速链接</h3>
+                    <ul>
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#program">方案介绍</a></li>
+                        <li><a href="#results">效果展示</a></li>
+                        <li><a href="#testimonials">用户评价</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 400-123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@chizheshou.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> 北京市朝阳区某某大厦</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 吃着瘦 版权所有</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 导航栏滚动效果
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if(window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 15px rgba(92, 75, 55, 0.1)';
+                header.style.background = 'rgba(254, 250, 246, 0.98)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(92, 75, 55, 0.1)';
+                header.style.background = 'rgba(254, 250, 246, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
