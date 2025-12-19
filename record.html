@@ -1,0 +1,2003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吃着瘦记体重</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8B7355; /* 棕色主色调 */
+            --primary-dark: #654321;
+            --primary-light: #D2B48C;
+            --secondary: #A0522D; /* 棕色系次要色调 */
+            --light: #FAF0E6; /* 米白色背景 */
+            --dark: #5C4033; /* 深棕色文字 */
+            --gray: #8B7355; /* 中灰色 */
+            --light-gray: #E8DFCA; /* 浅灰色 */
+            --border: #D2B48C; /* 边框色 */
+            --shadow: 0 4px 15px rgba(139, 115, 85, 0.1);
+            --radius: 12px;
+            --small-radius: 8px;
+            --success: #7F9F7F; /* 成功色 */
+            --warning: #D2B48C; /* 警告色 */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .logo i {
+            font-size: 28px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* 底部导航栏 */
+        .nav-tabs {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            display: flex;
+            border-top: 1px solid var(--light-gray);
+            padding: 10px 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px 0;
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            color: var(--primary);
+        }
+        
+        .nav-tab i {
+            display: block;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+        
+        /* 页面内容 */
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* 打卡页面 */
+        .checkin-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--small-radius);
+            font-size: 16px;
+            transition: border 0.3s;
+            background-color: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(139, 115, 85, 0.1);
+        }
+        
+        .input-with-unit {
+            position: relative;
+        }
+        
+        .input-unit {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+        
+        .photo-upload {
+            border: 2px dashed var(--border);
+            border-radius: var(--small-radius);
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            background-color: var(--light);
+        }
+        
+        .photo-upload:hover {
+            border-color: var(--primary);
+            background-color: rgba(139, 115, 85, 0.05);
+        }
+        
+        .photo-upload i {
+            font-size: 36px;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: var(--small-radius);
+            margin-top: 15px;
+            display: none;
+            border: 1px solid var(--border);
+        }
+        
+        .checkin-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: var(--small-radius);
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .checkin-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(139, 115, 85, 0.2);
+        }
+        
+        .checkin-btn:disabled {
+            background-color: var(--light-gray);
+            color: var(--gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* 最近记录 */
+        .recent-records {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .recent-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .record-item:last-child {
+            border-bottom: none;
+        }
+        
+        .record-date {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .record-data {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .record-weight, .record-waist {
+            text-align: right;
+        }
+        
+        .record-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .record-unit {
+            font-size: 12px;
+            color: var(--gray);
+            margin-left: 2px;
+        }
+        
+        .record-change {
+            font-size: 12px;
+            color: var(--success);
+        }
+        
+        .record-change.negative {
+            color: #D2691E;
+        }
+        
+        /* 排行榜页面 */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .dashboard-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .dashboard-filter {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .leaderboard {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .rank {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .rank-1 {
+            color: #D2691E;
+        }
+        
+        .rank-2 {
+            color: #8B7355;
+        }
+        
+        .rank-3 {
+            color: #A0522D;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+            border: 2px solid var(--primary);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .user-stats {
+            font-size: 14px;
+            color: var(--gray);
+            display: flex;
+            gap: 15px;
+        }
+        
+        .weight-loss {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 18px;
+            min-width: 100px;
+            text-align: right;
+        }
+        
+        /* 历史记录页面 */
+        .chart-container {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .chart-placeholder {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .history-list {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .history-item {
+            display: flex;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-date {
+            min-width: 100px;
+        }
+        
+        .history-date-day {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .history-date-month {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .history-content {
+            flex: 1;
+            padding-left: 20px;
+        }
+        
+        .history-metrics {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .history-photo {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: var(--small-radius);
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+        
+        /* 我的页面 */
+        .profile-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary);
+            margin-bottom: 15px;
+            background-color: var(--light);
+        }
+        
+        .profile-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .profile-city {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .settings-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .settings-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-label {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .settings-value {
+            color: var(--gray);
+        }
+        
+        .settings-input {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--small-radius);
+            font-size: 16px;
+            width: 150px;
+            background-color: white;
+        }
+        
+        .settings-select {
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--small-radius);
+            font-size: 16px;
+            width: 150px;
+            background-color: white;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        .save-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: var(--small-radius);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .save-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* 管理员导出区域 */
+        .admin-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        
+        .admin-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .admin-title i {
+            color: var(--primary);
+        }
+        
+        .export-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .export-btn {
+            padding: 12px 20px;
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: var(--small-radius);
+            font-size: 14px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .export-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .export-btn i {
+            margin-right: 8px;
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--gray);
+        }
+        
+        .empty-state i {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--light-gray);
+        }
+        
+        /* 模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+            border: 1px solid var(--border);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .checkin-card, .recent-records, .leaderboard, .chart-container, 
+            .history-list, .profile-card, .settings-card, .admin-card {
+                padding: 20px;
+            }
+            
+            .record-data {
+                gap: 10px;
+            }
+            
+            .history-metrics {
+                gap: 15px;
+            }
+            
+            .profile-stats {
+                gap: 15px;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .dashboard-filter {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .filter-btn {
+                flex: 1;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-weight-scale"></i>
+                <h1>吃着瘦记体重</h1>
+            </div>
+            <div class="subtitle">记录体重变化，管理健康生活</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- 打卡页面 -->
+        <div class="page active" id="checkin-page">
+            <div class="checkin-card">
+                <div class="card-title">
+                    <i class="fas fa-plus-circle"></i> 今日打卡
+                </div>
+                
+                <form id="checkinForm">
+                    <div class="form-group">
+                        <label class="form-label">体重 (kg)</label>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" id="weight" step="0.1" min="20" max="200" placeholder="请输入体重" required>
+                            <span class="input-unit">kg</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">腰围 (cm)</label>
+                        <div class="input-with-unit">
+                            <input type="number" class="form-input" id="waist" step="0.1" min="40" max="150" placeholder="请输入腰围" required>
+                            <span class="input-unit">cm</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">今日照片 (可选)</label>
+                        <div class="photo-upload" id="uploadArea">
+                            <i class="fas fa-camera"></i>
+                            <p>点击或拖拽上传照片</p>
+                            <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                            <img id="imagePreview" class="preview-image" src="" alt="预览">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="checkin-btn" id="submitBtn">
+                        <i class="fas fa-check-circle"></i> 确认打卡
+                    </button>
+                </form>
+            </div>
+            
+            <div class="recent-records">
+                <div class="recent-title">最近记录</div>
+                <div id="recentRecordsList">
+                    <div class="empty-state">
+                        <i class="fas fa-weight-scale"></i>
+                        <p>暂无打卡记录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 排行榜页面 -->
+        <div class="page" id="dashboard-page">
+            <div class="dashboard-header">
+                <div class="dashboard-title">减重排行榜</div>
+                <div class="dashboard-filter">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="week">本周</button>
+                    <button class="filter-btn" data-filter="month">本月</button>
+                </div>
+            </div>
+            
+            <div class="leaderboard">
+                <div id="leaderboardList">
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <p>暂无打卡数据</p>
+                        <p style="font-size: 14px; margin-top: 10px;">快去进行第一次打卡吧！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 历史记录页面 -->
+        <div class="page" id="history-page">
+            <div class="chart-container">
+                <div class="chart-title">体重变化趋势</div>
+                <div class="chart-placeholder" id="weightChart">
+                    <div>
+                        <i class="fas fa-chart-line" style="font-size: 48px; margin-bottom: 10px; color: #ddd;"></i>
+                        <p>暂无足够数据展示图表</p>
+                        <p style="font-size: 14px; margin-top: 10px;">打卡2次以上即可查看变化趋势</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="history-list">
+                <div class="chart-title">打卡历史</div>
+                <div id="historyList">
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>暂无历史记录</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 我的页面 -->
+        <div class="page" id="profile-page">
+            <div class="profile-card">
+                <img id="profileAvatar" class="profile-avatar" src="" alt="用户头像">
+                <div class="profile-name" id="profileName">微信用户</div>
+                <div class="profile-city" id="profileCity">正在定位...</div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalCheckins">0</div>
+                        <div class="stat-label">总打卡</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="weightLoss">0.0</div>
+                        <div class="stat-label">已减重(kg)</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="currentWeight">--</div>
+                        <div class="stat-label">当前体重</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings-card">
+                <div class="settings-title">个人设置</div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">昵称</div>
+                    <input type="text" class="settings-input" id="profileNameInput" placeholder="微信用户" maxlength="20">
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">身高 (cm)</div>
+                    <input type="number" class="settings-input" id="profileHeight" min="100" max="250" placeholder="未设置">
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">年龄</div>
+                    <input type="number" class="settings-input" id="profileAge" min="1" max="120" placeholder="未设置">
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">性别</div>
+                    <select class="settings-select" id="profileGender">
+                        <option value="">请选择</option>
+                        <option value="male">男</option>
+                        <option value="female">女</option>
+                    </select>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">数据公开</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="profilePublic" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <button class="save-btn" id="saveProfileBtn">
+                    <i class="fas fa-save"></i> 保存设置
+                </button>
+            </div>
+            
+            <!-- 管理员导出区域 -->
+            <div class="admin-card" id="adminSection" style="display: none;">
+                <div class="admin-title">
+                    <i class="fas fa-database"></i> 数据导出（管理员）
+                </div>
+                <p style="margin-bottom: 20px; color: var(--gray);">导出所有用户数据用于分析</p>
+                
+                <div class="export-options">
+                    <button class="export-btn" id="exportUsersBtn">
+                        <i class="fas fa-users"></i> 用户数据
+                    </button>
+                    <button class="export-btn" id="exportRecordsBtn">
+                        <i class="fas fa-list"></i> 打卡记录
+                    </button>
+                    <button class="export-btn" id="exportAllBtn">
+                        <i class="fas fa-download"></i> 全部数据
+                    </button>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">导出格式</label>
+                    <select class="form-input" id="exportFormat">
+                        <option value="json">JSON格式</option>
+                        <option value="csv">CSV格式</option>
+                    </select>
+                </div>
+                
+                <button class="checkin-btn" id="exportDataBtn" style="margin-top: 20px;">
+                    <i class="fas fa-file-export"></i> 导出数据
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航栏 -->
+    <div class="nav-tabs">
+        <a href="#" class="nav-tab active" data-page="checkin-page">
+            <i class="fas fa-plus-circle"></i>
+            <span>打卡</span>
+        </a>
+        <a href="#" class="nav-tab" data-page="dashboard-page">
+            <i class="fas fa-chart-line"></i>
+            <span>排行榜</span>
+        </a>
+        <a href="#" class="nav-tab" data-page="history-page">
+            <i class="fas fa-history"></i>
+            <span>记录</span>
+        </a>
+        <a href="#" class="nav-tab" data-page="profile-page">
+            <i class="fas fa-user"></i>
+            <span>我的</span>
+        </a>
+    </div>
+    
+    <!-- 数据导出模态框 -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeExportModal">&times;</button>
+            <div class="modal-title" id="exportModalTitle">数据导出</div>
+            <div style="margin-bottom: 20px;">
+                <p id="exportModalContent">正在准备数据...</p>
+            </div>
+            <div id="exportDataPreview" style="max-height: 300px; overflow-y: auto; background-color: var(--light); padding: 15px; border-radius: var(--small-radius); margin-bottom: 20px; display: none;">
+                <pre id="exportPreviewContent" style="white-space: pre-wrap; font-size: 12px; line-height: 1.4;"></pre>
+            </div>
+            <button class="checkin-btn" id="downloadExportBtn" style="display: none;">
+                <i class="fas fa-download"></i> 下载文件
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 模拟微信用户数据
+        const mockUsers = [
+            { id: 1, name: "微信用户_健康达人", avatar: "https://randomuser.me/api/portraits/men/32.jpg", city: "北京" },
+            { id: 2, name: "微信用户_减肥小能手", avatar: "https://randomuser.me/api/portraits/women/44.jpg", city: "上海" },
+            { id: 3, name: "微信用户_坚持就是胜利", avatar: "https://randomuser.me/api/portraits/men/67.jpg", city: "广州" },
+            { id: 4, name: "微信用户_瘦身教练", avatar: "https://randomuser.me/api/portraits/women/68.jpg", city: "深圳" },
+            { id: 5, name: "微信用户_运动爱好者", avatar: "https://randomuser.me/api/portraits/men/75.jpg", city: "杭州" },
+            { id: 6, name: "微信用户_轻舞飞扬", avatar: "https://randomuser.me/api/portraits/women/26.jpg", city: "成都" },
+            { id: 7, name: "微信用户_健身狂人", avatar: "https://randomuser.me/api/portraits/men/22.jpg", city: "武汉" }
+        ];
+        
+        // 模拟城市数据
+        const cities = ["北京", "上海", "广州", "深圳", "杭州", "成都", "武汉", "南京", "西安", "重庆"];
+        
+        // 当前用户
+        let currentUser = null;
+        let isAdmin = false; // 管理员标志
+        
+        // 页面元素
+        const pages = document.querySelectorAll('.page');
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const checkinForm = document.getElementById('checkinForm');
+        const uploadArea = document.getElementById('uploadArea');
+        const photoUpload = document.getElementById('photoUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        const recentRecordsList = document.getElementById('recentRecordsList');
+        const leaderboardList = document.getElementById('leaderboardList');
+        const historyList = document.getElementById('historyList');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const adminSection = document.getElementById('adminSection');
+        
+        // 我的页面元素
+        const profileAvatar = document.getElementById('profileAvatar');
+        const profileName = document.getElementById('profileName');
+        const profileNameInput = document.getElementById('profileNameInput');
+        const profileCity = document.getElementById('profileCity');
+        const totalCheckins = document.getElementById('totalCheckins');
+        const weightLoss = document.getElementById('weightLoss');
+        const currentWeight = document.getElementById('currentWeight');
+        const profileHeight = document.getElementById('profileHeight');
+        const profileAge = document.getElementById('profileAge');
+        const profileGender = document.getElementById('profileGender');
+        const profilePublic = document.getElementById('profilePublic');
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+        
+        // 导出相关元素
+        const exportModal = document.getElementById('exportModal');
+        const closeExportModal = document.getElementById('closeExportModal');
+        const exportModalTitle = document.getElementById('exportModalTitle');
+        const exportModalContent = document.getElementById('exportModalContent');
+        const exportDataPreview = document.getElementById('exportDataPreview');
+        const exportPreviewContent = document.getElementById('exportPreviewContent');
+        const downloadExportBtn = document.getElementById('downloadExportBtn');
+        const exportUsersBtn = document.getElementById('exportUsersBtn');
+        const exportRecordsBtn = document.getElementById('exportRecordsBtn');
+        const exportAllBtn = document.getElementById('exportAllBtn');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const exportFormat = document.getElementById('exportFormat');
+        
+        // 初始化函数
+        function init() {
+            // 模拟从微信获取用户信息
+            const randomUser = mockUsers[Math.floor(Math.random() * mockUsers.length)];
+            const randomCity = cities[Math.floor(Math.random() * cities.length)];
+            
+            // 生成用户ID（模拟微信唯一ID）
+            const userId = `wx_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+            
+            // 检查是否是管理员（这里简单判断，实际应用中应该更安全）
+            const urlParams = new URLSearchParams(window.location.search);
+            const adminParam = urlParams.get('admin');
+            isAdmin = adminParam === 'true' || localStorage.getItem('weightCheckinAdmin') === 'true';
+            
+            currentUser = {
+                id: userId,
+                name: randomUser.name,
+                avatar: randomUser.avatar,
+                city: randomCity,
+                height: null,
+                age: null,
+                gender: null,
+                isPublic: true,
+                isAdmin: isAdmin
+            };
+            
+            // 从localStorage加载用户数据
+            loadUserData();
+            
+            // 更新用户信息显示
+            updateProfileDisplay();
+            
+            // 如果是管理员，显示管理员区域
+            if (currentUser.isAdmin) {
+                adminSection.style.display = 'block';
+            }
+            
+            // 初始化事件监听器
+            setupEventListeners();
+            
+            // 更新各个页面数据
+            updateRecentRecords();
+            updateLeaderboard();
+            updateHistoryPage();
+        }
+        
+        // 加载用户数据
+        function loadUserData() {
+            const storedUser = localStorage.getItem('weightCheckinUser');
+            if (storedUser) {
+                const parsedUser = JSON.parse(storedUser);
+                // 保持管理员状态
+                parsedUser.isAdmin = currentUser.isAdmin;
+                currentUser = { ...currentUser, ...parsedUser };
+            }
+        }
+        
+        // 保存用户数据
+        function saveUserData() {
+            localStorage.setItem('weightCheckinUser', JSON.stringify(currentUser));
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 导航切换
+            navTabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pageId = tab.getAttribute('data-page');
+                    switchPage(pageId);
+                });
+            });
+            
+            // 图片上传
+            uploadArea.addEventListener('click', () => {
+                photoUpload.click();
+            });
+            
+            photoUpload.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 拖拽上传
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.backgroundColor = 'rgba(139, 115, 85, 0.05)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--border)';
+                uploadArea.style.backgroundColor = 'var(--light)';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--border)';
+                uploadArea.style.backgroundColor = 'var(--light)';
+                
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    photoUpload.files = e.dataTransfer.files;
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        imagePreview.src = e.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // 打卡表单提交
+            checkinForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const weight = parseFloat(document.getElementById('weight').value);
+                const waist = parseFloat(document.getElementById('waist').value);
+                const photo = imagePreview.src || '';
+                
+                // 创建打卡记录
+                const record = {
+                    id: Date.now(),
+                    userId: currentUser.id,
+                    userName: currentUser.name,
+                    userAvatar: currentUser.avatar,
+                    userHeight: currentUser.height,
+                    userAge: currentUser.age,
+                    userGender: currentUser.gender,
+                    weight: weight,
+                    waist: waist,
+                    photo: photo,
+                    city: currentUser.city,
+                    date: new Date().toISOString(),
+                    timestamp: Date.now(),
+                    isPublic: currentUser.isPublic
+                };
+                
+                // 保存记录
+                saveRecord(record);
+                
+                // 重置表单
+                checkinForm.reset();
+                imagePreview.src = '';
+                imagePreview.style.display = 'none';
+                
+                // 更新各个页面
+                updateRecentRecords();
+                updateLeaderboard();
+                updateHistoryPage();
+                updateProfileDisplay();
+                
+                // 显示成功消息
+                showMessage('打卡成功！');
+            });
+            
+            // 排行榜过滤
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    updateLeaderboard(button.getAttribute('data-filter'));
+                });
+            });
+            
+            // 保存个人设置
+            saveProfileBtn.addEventListener('click', () => {
+                const newName = profileNameInput.value.trim();
+                currentUser.name = newName || currentUser.name;
+                currentUser.height = profileHeight.value ? parseFloat(profileHeight.value) : null;
+                currentUser.age = profileAge.value ? parseInt(profileAge.value) : null;
+                currentUser.gender = profileGender.value || null;
+                currentUser.isPublic = profilePublic.checked;
+                
+                saveUserData();
+                updateProfileDisplay();
+                
+                showMessage('设置已保存！');
+            });
+            
+            // 导出相关事件
+            closeExportModal.addEventListener('click', () => {
+                exportModal.classList.remove('active');
+            });
+            
+            // 点击模态框外部关闭
+            exportModal.addEventListener('click', (e) => {
+                if (e.target === exportModal) {
+                    exportModal.classList.remove('active');
+                }
+            });
+            
+            // 导出按钮点击
+            exportUsersBtn.addEventListener('click', () => {
+                showExportModal('users');
+            });
+            
+            exportRecordsBtn.addEventListener('click', () => {
+                showExportModal('records');
+            });
+            
+            exportAllBtn.addEventListener('click', () => {
+                showExportModal('all');
+            });
+            
+            exportDataBtn.addEventListener('click', () => {
+                exportData();
+            });
+            
+            downloadExportBtn.addEventListener('click', () => {
+                downloadExport();
+            });
+        }
+        
+        // 切换页面
+        function switchPage(pageId) {
+            // 更新导航状态
+            navTabs.forEach(tab => {
+                if (tab.getAttribute('data-page') === pageId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // 更新页面显示
+            pages.forEach(page => {
+                if (page.id === pageId) {
+                    page.classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                }
+            });
+            
+            // 更新页面数据
+            if (pageId === 'dashboard-page') {
+                updateLeaderboard();
+            } else if (pageId === 'history-page') {
+                updateHistoryPage();
+            } else if (pageId === 'profile-page') {
+                updateProfileDisplay();
+            }
+        }
+        
+        // 保存记录
+        function saveRecord(record) {
+            // 从localStorage获取现有记录
+            let records = JSON.parse(localStorage.getItem('weightCheckinRecords') || '[]');
+            
+            // 添加新记录
+            records.push(record);
+            
+            // 保存回localStorage
+            localStorage.setItem('weightCheckinRecords', JSON.stringify(records));
+        }
+        
+        // 获取所有记录
+        function getAllRecords() {
+            return JSON.parse(localStorage.getItem('weightCheckinRecords') || '[]');
+        }
+        
+        // 获取所有用户
+        function getAllUsers() {
+            // 从记录中提取用户信息
+            const records = getAllRecords();
+            const usersMap = {};
+            const users = [];
+            
+            // 添加当前用户
+            usersMap[currentUser.id] = { ...currentUser };
+            
+            // 从记录中提取用户
+            records.forEach(record => {
+                if (!usersMap[record.userId]) {
+                    usersMap[record.userId] = {
+                        id: record.userId,
+                        name: record.userName,
+                        avatar: record.userAvatar,
+                        height: record.userHeight,
+                        age: record.userAge,
+                        gender: record.userGender,
+                        city: record.city,
+                        isPublic: record.isPublic,
+                        isAdmin: false
+                    };
+                }
+            });
+            
+            // 转换为数组
+            for (const userId in usersMap) {
+                users.push(usersMap[userId]);
+            }
+            
+            return users;
+        }
+        
+        // 获取用户记录
+        function getUserRecords(userId) {
+            const records = getAllRecords();
+            return records.filter(record => record.userId === userId);
+        }
+        
+        // 获取公开记录
+        function getPublicRecords() {
+            const records = getAllRecords();
+            return records.filter(record => record.isPublic);
+        }
+        
+        // 更新最近记录显示
+        function updateRecentRecords() {
+            const records = getUserRecords(currentUser.id);
+            
+            if (records.length === 0) {
+                recentRecordsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-weight-scale"></i>
+                        <p>暂无打卡记录</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 按时间倒序排序，取最近5条
+            const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
+            const recentRecords = sortedRecords.slice(0, 5);
+            
+            let html = '';
+            recentRecords.forEach((record, index) => {
+                const date = new Date(record.date);
+                const dateStr = date.toLocaleDateString('zh-CN', { 
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+                
+                // 计算与上一条记录的差值
+                let weightChange = '';
+                if (index < sortedRecords.length - 1) {
+                    const prevRecord = sortedRecords[index + 1];
+                    const change = record.weight - prevRecord.weight;
+                    if (change !== 0) {
+                        const changeText = change > 0 ? `+${change.toFixed(1)}` : change.toFixed(1);
+                        weightChange = `<div class="record-change ${change > 0 ? 'negative' : ''}">${changeText}kg</div>`;
+                    }
+                }
+                
+                html += `
+                    <div class="record-item">
+                        <div class="record-date">${dateStr}</div>
+                        <div class="record-data">
+                            <div class="record-weight">
+                                <div class="record-value">${record.weight.toFixed(1)}<span class="record-unit">kg</span></div>
+                                ${weightChange}
+                            </div>
+                            <div class="record-waist">
+                                <div class="record-value">${record.waist.toFixed(1)}<span class="record-unit">cm</span></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            recentRecordsList.innerHTML = html;
+        }
+        
+        // 更新排行榜
+        function updateLeaderboard(filter = 'all') {
+            // 获取公开记录
+            const records = getPublicRecords();
+            
+            if (records.length === 0) {
+                leaderboardList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-users"></i>
+                        <p>暂无打卡数据</p>
+                        <p style="font-size: 14px; margin-top: 10px;">快去进行第一次打卡吧！</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 按用户分组
+            const userRecords = {};
+            records.forEach(record => {
+                if (!userRecords[record.userId]) {
+                    userRecords[record.userId] = [];
+                }
+                userRecords[record.userId].push(record);
+            });
+            
+            // 计算每个用户的减重数据
+            const usersWithWeightLoss = Object.keys(userRecords).map(userId => {
+                const userRecordsList = userRecords[userId];
+                const sortedByDate = [...userRecordsList].sort((a, b) => a.timestamp - b.timestamp);
+                
+                // 最早记录的体重和最近记录的体重
+                const firstWeight = sortedByDate[0].weight;
+                const latestWeight = sortedByDate[sortedByDate.length - 1].weight;
+                
+                // 减重公斤数
+                const weightLossKg = (firstWeight - latestWeight).toFixed(1);
+                
+                return {
+                    userId: userId,
+                    name: userRecordsList[0].userName,
+                    avatar: userRecordsList[0].userAvatar,
+                    city: userRecordsList[0].city,
+                    weightLoss: weightLossKg,
+                    recordCount: userRecordsList.length,
+                    latestWeight: latestWeight,
+                    firstWeight: firstWeight,
+                    lastRecordDate: userRecordsList[0].timestamp
+                };
+            });
+            
+            // 按减重数量降序排序
+            usersWithWeightLoss.sort((a, b) => b.weightLoss - a.weightLoss);
+            
+            // 生成排行榜HTML
+            let html = '';
+            usersWithWeightLoss.forEach((user, index) => {
+                const rank = index + 1;
+                const rankClass = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : '';
+                
+                html += `
+                    <div class="leaderboard-item">
+                        <div class="rank ${rankClass}">${rank}</div>
+                        <img class="user-avatar" src="${user.avatar}" alt="${user.name}">
+                        <div class="user-info">
+                            <div class="user-name">${user.name}</div>
+                            <div class="user-stats">
+                                <span>${user.city}</span>
+                                <span>打卡${user.recordCount}次</span>
+                            </div>
+                        </div>
+                        <div class="weight-loss">-${user.weightLoss}kg</div>
+                    </div>
+                `;
+            });
+            
+            leaderboardList.innerHTML = html;
+        }
+        
+        // 更新历史记录页面
+        function updateHistoryPage() {
+            const records = getUserRecords(currentUser.id);
+            
+            if (records.length === 0) {
+                historyList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-history"></i>
+                        <p>暂无历史记录</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // 按时间倒序排序
+            const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
+            
+            let html = '';
+            sortedRecords.forEach(record => {
+                const date = new Date(record.date);
+                const day = date.getDate();
+                const month = date.toLocaleDateString('zh-CN', { month: 'short' });
+                const fullDate = date.toLocaleDateString('zh-CN', { 
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // 计算BMI（如果身高存在）
+                let bmiInfo = '';
+                if (currentUser.height) {
+                    const heightInMeters = currentUser.height / 100;
+                    const bmi = record.weight / (heightInMeters * heightInMeters);
+                    bmiInfo = `<div>
+                        <div style="font-size: 16px; font-weight: 600;">${bmi.toFixed(1)}<span style="font-size: 12px; color: var(--gray); margin-left: 2px;">BMI</span></div>
+                        <div style="font-size: 12px; color: var(--gray);">体重指数</div>
+                    </div>`;
+                }
+                
+                html += `
+                    <div class="history-item">
+                        <div class="history-date">
+                            <div class="history-date-day">${day}</div>
+                            <div class="history-date-month">${month}</div>
+                        </div>
+                        <div class="history-content">
+                            <div class="history-metrics">
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 600;">${record.weight.toFixed(1)}<span style="font-size: 14px; color: var(--gray); margin-left: 2px;">kg</span></div>
+                                    <div style="font-size: 12px; color: var(--gray);">体重</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 18px; font-weight: 600;">${record.waist.toFixed(1)}<span style="font-size: 14px; color: var(--gray); margin-left: 2px;">cm</span></div>
+                                    <div style="font-size: 12px; color: var(--gray);">腰围</div>
+                                </div>
+                                ${bmiInfo}
+                            </div>
+                            <div style="font-size: 14px; color: var(--gray); margin-bottom: 10px;">${fullDate}</div>
+                            ${record.photo ? `<img class="history-photo" src="${record.photo}" alt="打卡照片">` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyList.innerHTML = html;
+            
+            // 如果有足够数据，更新图表
+            if (records.length >= 2) {
+                updateWeightChart(records);
+            }
+        }
+        
+        // 更新体重图表
+        function updateWeightChart(records) {
+            // 按时间正序排序
+            const sortedRecords = [...records].sort((a, b) => a.timestamp - b.timestamp);
+            
+            // 提取日期和体重数据
+            const dates = sortedRecords.map(record => {
+                const date = new Date(record.date);
+                return `${date.getMonth() + 1}/${date.getDate()}`;
+            });
+            
+            const weights = sortedRecords.map(record => record.weight);
+            
+            // 创建简单的SVG图表
+            const chartContainer = document.getElementById('weightChart');
+            chartContainer.innerHTML = '';
+            
+            // 创建SVG元素
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("width", "100%");
+            svg.setAttribute("height", "200");
+            svg.setAttribute("viewBox", "0 0 400 200");
+            
+            // 计算坐标
+            const padding = { top: 20, right: 40, bottom: 40, left: 40 };
+            const width = 400 - padding.left - padding.right;
+            const height = 200 - padding.top - padding.bottom;
+            
+            // 计算最大值和最小值
+            const maxWeight = Math.max(...weights);
+            const minWeight = Math.min(...weights);
+            const weightRange = maxWeight - minWeight || 1; // 防止除零
+            
+            // 创建折线路径
+            let pathData = "";
+            sortedRecords.forEach((record, index) => {
+                const x = padding.left + (index / (sortedRecords.length - 1)) * width;
+                const y = padding.top + height - ((record.weight - minWeight) / weightRange) * height;
+                
+                if (index === 0) {
+                    pathData += `M ${x} ${y} `;
+                } else {
+                    pathData += `L ${x} ${y} `;
+                }
+            });
+            
+            // 添加折线
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", pathData);
+            path.setAttribute("fill", "none");
+            path.setAttribute("stroke", "var(--primary)");
+            path.setAttribute("stroke-width", "3");
+            path.setAttribute("stroke-linecap", "round");
+            path.setAttribute("stroke-linejoin", "round");
+            svg.appendChild(path);
+            
+            // 添加数据点
+            sortedRecords.forEach((record, index) => {
+                const x = padding.left + (index / (sortedRecords.length - 1)) * width;
+                const y = padding.top + height - ((record.weight - minWeight) / weightRange) * height;
+                
+                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                circle.setAttribute("cx", x);
+                circle.setAttribute("cy", y);
+                circle.setAttribute("r", "4");
+                circle.setAttribute("fill", "white");
+                circle.setAttribute("stroke", "var(--primary)");
+                circle.setAttribute("stroke-width", "2");
+                svg.appendChild(circle);
+            });
+            
+            // 添加X轴（日期）
+            sortedRecords.forEach((record, index) => {
+                if (index % Math.ceil(sortedRecords.length / 5) === 0 || index === sortedRecords.length - 1) {
+                    const x = padding.left + (index / (sortedRecords.length - 1)) * width;
+                    const date = new Date(record.date);
+                    const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
+                    
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute("x", x);
+                    text.setAttribute("y", height + padding.top + 20);
+                    text.setAttribute("text-anchor", "middle");
+                    text.setAttribute("font-size", "12");
+                    text.setAttribute("fill", "var(--gray)");
+                    text.textContent = dateStr;
+                    svg.appendChild(text);
+                }
+            });
+            
+            // 添加Y轴（体重）
+            const weightStep = weightRange > 0 ? Math.ceil(weightRange / 4) : 1;
+            for (let i = 0; i <= 4; i++) {
+                const weightValue = minWeight + i * weightStep;
+                const y = padding.top + height - (i * weightStep / weightRange) * height;
+                
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute("x", padding.left - 10);
+                text.setAttribute("y", y);
+                text.setAttribute("text-anchor", "end");
+                text.setAttribute("font-size", "12");
+                text.setAttribute("fill", "var(--gray)");
+                text.textContent = weightValue.toFixed(1);
+                svg.appendChild(text);
+            }
+            
+            chartContainer.appendChild(svg);
+        }
+        
+        // 更新我的页面显示
+        function updateProfileDisplay() {
+            // 更新用户信息
+            profileAvatar.src = currentUser.avatar;
+            profileName.textContent = currentUser.name;
+            profileCity.textContent = currentUser.city;
+            
+            // 更新设置表单
+            profileNameInput.value = currentUser.name;
+            profileHeight.value = currentUser.height || '';
+            profileAge.value = currentUser.age || '';
+            profileGender.value = currentUser.gender || '';
+            profilePublic.checked = currentUser.isPublic;
+            
+            // 更新统计数据
+            const records = getUserRecords(currentUser.id);
+            totalCheckins.textContent = records.length;
+            
+            if (records.length > 0) {
+                // 计算体重变化
+                const sortedRecords = [...records].sort((a, b) => a.timestamp - b.timestamp);
+                const firstWeight = sortedRecords[0].weight;
+                const latestWeight = sortedRecords[sortedRecords.length - 1].weight;
+                const loss = (firstWeight - latestWeight).toFixed(1);
+                
+                weightLoss.textContent = loss;
+                currentWeight.textContent = `${latestWeight.toFixed(1)}kg`;
+            } else {
+                weightLoss.textContent = '0.0';
+                currentWeight.textContent = '--';
+            }
+        }
+        
+        // 显示导出模态框
+        let currentExportData = null;
+        let currentExportType = '';
+        let currentExportFileName = '';
+        
+        function showExportModal(type) {
+            currentExportType = type;
+            
+            switch(type) {
+                case 'users':
+                    exportModalTitle.textContent = '导出用户数据';
+                    exportModalContent.textContent = '准备用户数据...';
+                    break;
+                case 'records':
+                    exportModalTitle.textContent = '导出打卡记录';
+                    exportModalContent.textContent = '准备打卡记录数据...';
+                    break;
+                case 'all':
+                    exportModalTitle.textContent = '导出全部数据';
+                    exportModalContent.textContent = '准备全部数据...';
+                    break;
+            }
+            
+            exportDataPreview.style.display = 'none';
+            downloadExportBtn.style.display = 'none';
+            exportModal.classList.add('active');
+            
+            // 准备数据
+            setTimeout(() => {
+                prepareExportData(type);
+            }, 500);
+        }
+        
+        // 准备导出数据
+        function prepareExportData(type) {
+            let data = {};
+            let fileName = '';
+            
+            switch(type) {
+                case 'users':
+                    data = getAllUsers();
+                    fileName = `weight_users_${new Date().toISOString().split('T')[0]}`;
+                    break;
+                case 'records':
+                    data = getAllRecords();
+                    fileName = `weight_records_${new Date().toISOString().split('T')[0]}`;
+                    break;
+                case 'all':
+                    data = {
+                        users: getAllUsers(),
+                        records: getAllRecords(),
+                        exportTime: new Date().toISOString()
+                    };
+                    fileName = `weight_all_data_${new Date().toISOString().split('T')[0]}`;
+                    break;
+            }
+            
+            currentExportData = data;
+            currentExportFileName = fileName;
+            
+            // 显示预览
+            const format = exportFormat.value;
+            if (format === 'json') {
+                exportPreviewContent.textContent = JSON.stringify(data, null, 2);
+            } else {
+                // CSV格式
+                exportPreviewContent.textContent = convertToCSV(data, type);
+            }
+            
+            exportDataPreview.style.display = 'block';
+            exportModalContent.textContent = `数据已准备就绪，共 ${getDataCount(data, type)} 条记录`;
+            downloadExportBtn.style.display = 'block';
+        }
+        
+        // 获取数据数量
+        function getDataCount(data, type) {
+            if (type === 'all') {
+                return `用户: ${data.users.length}, 记录: ${data.records.length}`;
+            } else if (Array.isArray(data)) {
+                return data.length;
+            }
+            return 0;
+        }
+        
+        // 转换为CSV格式
+        function convertToCSV(data, type) {
+            if (type === 'all') {
+                // 对于全部数据，我们只导出记录部分
+                return convertArrayToCSV(data.records);
+            } else if (Array.isArray(data)) {
+                return convertArrayToCSV(data);
+            }
+            return '';
+        }
+        
+        // 将数组转换为CSV
+        function convertArrayToCSV(arr) {
+            if (arr.length === 0) return '';
+            
+            // 获取表头
+            const headers = Object.keys(arr[0]);
+            
+            // 创建CSV内容
+            let csv = headers.join(',') + '\n';
+            
+            // 添加数据行
+            arr.forEach(item => {
+                const row = headers.map(header => {
+                    // 处理可能包含逗号或换行符的值
+                    let value = item[header];
+                    if (typeof value === 'string' && (value.includes(',') || value.includes('\n'))) {
+                        value = `"${value}"`;
+                    }
+                    return value;
+                }).join(',');
+                csv += row + '\n';
+            });
+            
+            return csv;
+        }
+        
+        // 导出数据
+        function exportData() {
+            if (!currentExportData) return;
+            
+            const format = exportFormat.value;
+            let dataStr = '';
+            let mimeType = '';
+            let fileExtension = '';
+            
+            if (format === 'json') {
+                dataStr = JSON.stringify(currentExportData, null, 2);
+                mimeType = 'application/json';
+                fileExtension = 'json';
+            } else {
+                dataStr = convertToCSV(currentExportData, currentExportType);
+                mimeType = 'text/csv';
+                fileExtension = 'csv';
+            }
+            
+            // 创建下载链接
+            const blob = new Blob([dataStr], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${currentExportFileName}.${fileExtension}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            exportModal.classList.remove('active');
+            showMessage('数据导出成功！');
+        }
+        
+        // 下载导出文件
+        function downloadExport() {
+            exportData();
+        }
+        
+        // 显示消息
+        function showMessage(message) {
+            // 创建消息元素
+            const messageEl = document.createElement('div');
+            messageEl.textContent = message;
+            messageEl.style.position = 'fixed';
+            messageEl.style.top = '50%';
+            messageEl.style.left = '50%';
+            messageEl.style.transform = 'translate(-50%, -50%)';
+            messageEl.style.backgroundColor = 'var(--primary)';
+            messageEl.style.color = 'white';
+            messageEl.style.padding = '15px 30px';
+            messageEl.style.borderRadius = 'var(--small-radius)';
+            messageEl.style.zIndex = '2000';
+            messageEl.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            messageEl.style.fontWeight = '600';
+            
+            document.body.appendChild(messageEl);
+            
+            // 2秒后移除消息
+            setTimeout(() => {
+                messageEl.remove();
+            }, 2000);
+        }
+        
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
