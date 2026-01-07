@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>吃着瘦AI抖音起号自评系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-light: #F5E6FF;
+            --primary-medium: #D8B4FE;
+            --primary-dark: #9D4EDD;
+            --accent-color: #C77DFF;
+            --text-dark: #3A0CA3;
+            --text-light: #5A189A;
+            --background: #FCF7FF;
+            --card-bg: #FFFFFF;
+            --success: #4CC9F0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-light);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-image: radial-gradient(circle at 10% 20%, rgba(248, 240, 255, 0.8) 0%, transparent 20%),
+                              radial-gradient(circle at 90% 80%, rgba(248, 240, 255, 0.8) 0%, transparent 20%);
+        }
+        
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.1);
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 1px solid var(--primary-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--primary-light);
+        }
+        
+        h1 {
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        h2 {
+            color: var(--primary-dark);
+            margin: 35px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-light);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2 i {
+            margin-right: 12px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        h3 {
+            color: var(--text-dark);
+            margin: 25px 0 15px;
+            font-size: 1.4rem;
+        }
+        
+        .section-info {
+            background-color: var(--primary-light);
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--primary-medium);
+            font-size: 1rem;
+            color: var(--text-light);
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .option-card {
+            border: 2px solid var(--primary-light);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background-color: white;
+        }
+        
+        .option-card:hover {
+            border-color: var(--primary-medium);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.1);
+        }
+        
+        .option-card.selected {
+            border-color: var(--primary-dark);
+            background-color: var(--primary-light);
+            box-shadow: 0 8px 16px rgba(157, 78, 221, 0.15);
+        }
+        
+        .option-card.selected::before {
+            content: "✓";
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .option-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .option-icon {
+            margin-right: 10px;
+            color: var(--primary-dark);
+        }
+        
+        .option-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .scenario-box {
+            background-color: var(--primary-light);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid var(--accent-color);
+        }
+        
+        .scenario-question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+        
+        .scenario-option {
+            background-color: white;
+            border: 1px solid var(--primary-light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .scenario-option:hover {
+            border-color: var(--primary-medium);
+            background-color: #fcf7ff;
+        }
+        
+        .scenario-option.selected {
+            border-color: var(--primary-dark);
+            background-color: var(--primary-light);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        input[type="text"], select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--primary-light);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: white;
+            color: var(--text-dark);
+        }
+        
+        input[type="text"]:focus, select:focus {
+            border-color: var(--primary-dark);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(157, 78, 221, 0.2);
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-width: 200px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(157, 78, 221, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--text-dark);
+            border: 2px solid var(--primary-medium);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-3px);
+        }
+        
+        .result-container {
+            background-color: var(--primary-light);
+            border-radius: 16px;
+            padding: 30px;
+            margin-top: 40px;
+            border-left: 8px solid var(--success);
+            display: none;
+        }
+        
+        .result-container.show {
+            display: block;
+            animation: fadeIn 0.7s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .result-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-title i {
+            margin-right: 12px;
+        }
+        
+        .result-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 15px;
+            white-space: pre-line;
+            line-height: 1.8;
+            color: var(--text-light);
+            font-size: 1.05rem;
+        }
+        
+        .highlight {
+            background-color: rgba(157, 78, 221, 0.1);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .video-guide {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+            border: 2px dashed var(--primary-medium);
+        }
+        
+        .video-type {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--primary-light);
+        }
+        
+        .video-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .exposure-video .video-icon {
+            background: linear-gradient(135deg, #FF9E6D, #FF6B9D);
+        }
+        
+        .value-video .video-icon {
+            background: linear-gradient(135deg, #4CC9F0, #4361EE);
+        }
+        
+        .lead-video .video-icon {
+            background: linear-gradient(135deg, #9D4EDD, #7209B7);
+        }
+        
+        .video-info {
+            flex-grow: 1;
+        }
+        
+        .video-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .video-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .meta-item i {
+            margin-right: 5px;
+            color: var(--primary-dark);
+        }
+        
+        .video-structure {
+            background-color: var(--primary-light);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: var(--text-light);
+            font-size: 1rem;
+            padding-top: 25px;
+            border-top: 1px solid var(--primary-light);
+            font-weight: 600;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .error-message {
+            color: #E63946;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 25px 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .result-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        .progress-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--primary-light);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-dark), var(--accent-color));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> 吃着瘦AI抖音起号自评系统</h1>
+            <p class="subtitle">本系统将帮助您定位个人风格，制定专属的AI数字人+真人出镜混合内容策略。通过情景测试，找到最适合您的内容方向，并生成三类视频标准化生产模板。</p>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">请完成所有必填项目以生成报告</div>
+            </div>
+        </header>
+        
+        <form id="assessmentForm">
+            <h2><i class="fas fa-id-card"></i> 第一部分：基础画像</h2>
+            <div class="section-info">
+                这些信息将构成您账号的基石，帮助我们理解您的背景和优势。
+            </div>
+            
+            <div class="form-group">
+                <h3>1. 您的年龄段是？</h3>
+                <div class="options-grid" id="ageGroup">
+                    <div class="option-card" data-value="30-40">
+                        <div class="option-title"><i class="fas fa-user-tie option-icon"></i> 30-40岁</div>
+                        <div class="option-desc">职场中坚力量，关注效率与工作生活平衡，可能面临代谢初降和压力管理挑战。</div>
+                    </div>
+                    <div class="option-card" data-value="40-50">
+                        <div class="option-title"><i class="fas fa-user-friends option-icon"></i> 40-50岁</div>
+                        <div class="option-desc">经验丰富的中年群体，关注健康预警与家庭责任，有生活智慧与长期视角。</div>
+                    </div>
+                    <div class="option-card" data-value="50-60">
+                        <div class="option-title"><i class="fas fa-user-graduate option-icon"></i> 50-60岁</div>
+                        <div class="option-desc">成熟稳重的中老年群体，注重慢病预防与生活品质，追求可持续的健康管理方式。</div>
+                    </div>
+                </div>
+                <div class="error-message" id="ageError">请选择您的年龄段</div>
+            </div>
+            
+            <div class="form-group">
+                <h3>2. 您的性别是？</h3>
+                <div class="options-grid" id="genderGroup">
+                    <div class="option-card" data-value="male">
+                        <div class="option-title"><i class="fas fa-mars option-icon"></i> 男性</div>
+                        <div class="option-desc">适合从男性健康角度切入，关注增肌减脂、精力管理、内脏脂肪等话题。</div>
+                    </div>
+                    <div class="option-card" data-value="female">
+                        <div class="option-title"><i class="fas fa-venus option-icon"></i> 女性</div>
+                        <div class="option-desc">适合从女性健康角度切入，关注内分泌平衡、产后恢复、围绝经期管理等话题。</div>
+                    </div>
+                </div>
+                <div class="error-message" id="genderError">请选择您的性别</div>
+            </div>
+            
+            <div class="form-group">
+                <h3>3. 您的主业/原职业背景是？</h3>
+                <div class="options-grid" id="professionGroup">
+                    <div class="option-card" data-value="medical">
+                        <div class="option-title"><i class="fas fa-user-md option-icon"></i> 医疗/健康相关</div>
+                        <div class="option-desc">医生、护士、药师、营养师等，具备强专业背书和科学严谨的思维模式。</div>
+                    </div>
+                    <div class="option-card" data-value="education">
+                        <div class="option-title"><i class="fas fa-chalkboard-teacher option-icon"></i> 教育/培训相关</div>
+                        <div class="option-desc">教师、讲师、教练、培训师等，擅长将复杂知识系统化、结构化地传授。</div>
+                    </div>
+                    <div class="option-card" data-value="service">
+                        <div class="option-title"><i class="fas fa-comments option-icon"></i> 服务/沟通相关</div>
+                        <div class="option-desc">销售、客服、顾问、公关等，具备强共情能力和人际沟通技巧。</div>
+                    </div>
+                    <div class="option-card" data-value="management">
+                        <div class="option-title"><i class="fas fa-chart-line option-icon"></i> 管理/技术相关</div>
+                        <div class="option-desc">项目经理、工程师、分析师、程序员等，擅长逻辑分析和解决方案设计。</div>
+                    </div>
+                    <div class="option-card" data-value="creative">
+                        <div class="option-title"><i class="fas fa-palette option-icon"></i> 创意/艺术相关</div>
+                        <div class="option-desc">设计师、作家、艺术家、自媒体人等，具备创意表达和视觉审美能力。</div>
+                    </div>
+                    <div class="option-card" data-value="homemaker">
+                        <div class="option-title"><i class="fas fa-home option-icon"></i> 家庭管理者</div>
+                        <div class="option-desc">全职父母、家庭主妇/夫，具备丰富的生活实践经验和时间管理能力。</div>
+                    </div>
+                    <div class="option-card" data-value="retired">
+                        <div class="option-title"><i class="fas fa-umbrella-beach option-icon"></i> 退休人士</div>
+                        <div class="option-desc">拥有丰富人生阅历和时间资源，注重健康养生和生活品质的提升。</div>
+                    </div>
+                    <div class="option-card" data-value="other">
+                        <div class="option-title"><i class="fas fa-user option-icon"></i> 其他职业</div>
+                        <div class="option-desc">其他职业背景，拥有独特的视角和经验。</div>
+                    </div>
+                </div>
+                <div class="error-message" id="professionError">请选择您的主业/原职业背景</div>
+            </div>
+            
+            <div class="form-group">
+                <h3>4. 您的"健康故事"类型是？</h3>
+                <div class="options-grid" id="storyGroup">
+                    <div class="option-card" data-value="success">
+                        <div class="option-title"><i class="fas fa-trophy option-icon"></i> 成功管理者</div>
+                        <div class="option-desc">自身有显著的体重/健康改善经历，有前后对比，说服力强。</div>
+                    </div>
+                    <div class="option-card" data-value="learner">
+                        <div class="option-title"><i class="fas fa-graduation-cap option-icon"></i> 终身学习者</div>
+                        <div class="option-desc">系统学习营养学/健康知识，持有相关证书，是专业爱好者。</div>
+                    </div>
+                    <div class="option-card" data-value="helper">
+                        <div class="option-title"><i class="fas fa-hands-helping option-icon"></i> 助人分享者</div>
+                        <div class="option-desc">享受帮助他人改善健康的成就感，有服务他人的内在驱动力。</div>
+                    </div>
+                </div>
+                <div class="error-message" id="storyError">请选择您的健康故事类型</div>
+            </div>
+            
+            <h2><i class="fas fa-theater-masks"></i> 第二部分：情景测试 - 您的沟通风格</h2>
+            <div class="section-info">
+                请想象以下情景，选择您最自然、最真实的回应方式。这将帮助我们精准定位您的表达风格。
+            </div>
+            
+            <div class="form-group">
+                <div class="scenario-box" id="scenario1">
+                    <div class="scenario-question">情景1：当用户向您抱怨"我试了很多方法，总是反弹，是不是没救了？"时，您会如何回应？</div>
+                    <div class="scenario-option" data-value="empathy">
+                        <strong>A. 先共情，再给希望</strong><br>
+                        "我非常理解你的挫败感，很多人卡在这里。这不是你的错，可能是方法没对准体质。我们一起找找更适合你的方式。"
+                    </div>
+                    <div class="scenario-option" data-value="analysis">
+                        <strong>B. 理性分析，找出原因</strong><br>
+                        "'反弹'其实是身体的一种保护机制。我们来科学分析一下你之前的方法，看看问题出在哪里，然后针对性调整。"
+                    </div>
+                    <div class="scenario-option" data-value="encouragement">
+                        <strong>C. 直接鼓励，强调行动</strong><br>
+                        "别灰心！反弹说明身体在适应新变化。重要的是找到能长期坚持的方式，而不是追求短期效果。我们可以从一个小习惯开始改变。"
+                    </div>
+                </div>
+                <div class="error-message" id="scenario1Error">请选择情景1的回应方式</div>
+            </div>
+            
+            <div class="form-group">
+                <div class="scenario-box" id="scenario2">
+                    <div class="scenario-question">情景2：当您需要向用户解释"为什么压力大会导致体重增加"时，您更倾向于如何讲解？</div>
+                    <div class="scenario-option" data-value="metaphor">
+                        <strong>A. 用生动的比喻</strong><br>
+                        "你可以把身体想象成一个智能管家。压力大的时候，管家误以为遇到了危险，就会拼命囤积物资（脂肪）以备不时之需。"
+                    </div>
+                    <div class="scenario-option" data-value="science">
+                        <strong>B. 讲科学原理</strong><br>
+                        "压力导致皮质醇升高，这会促进脂肪储存特别是腹部脂肪，同时增加食欲，尤其是对高糖高脂食物的渴望。"
+                    </div>
+                    <div class="scenario-option" data-value="experience">
+                        <strong>C. 分享经验故事</strong><br>
+                        "我有个学员之前工作压力特别大，明明吃得不多却一直长胖。后来我们调整了压力管理方式，体重才慢慢恢复正常。"
+                    </div>
+                </div>
+                <div class="error-message" id="scenario2Error">请选择情景2的讲解方式</div>
+            </div>
+            
+            <div class="form-group">
+                <div class="scenario-box" id="scenario3">
+                    <div class="scenario-question">情景3：当您要邀请用户加入您的健康社群时，您会如何描述社群的价值？</div>
+                    <div class="scenario-option" data-value="community">
+                        <strong>A. 强调社群氛围</strong><br>
+                        "在这里你不是一个人在战斗。我们互相鼓励，分享每天的进步和健康美食，一起走过这段改变之旅。"
+                    </div>
+                    <div class="scenario-option" data-value="resources">
+                        <strong>B. 强调实用资源</strong><br>
+                        "社群内有我精心整理的《健康饮食自查手册》、每周直播答疑和食谱分享，都是帮你少走弯路的实用工具。"
+                    </div>
+                    <div class="scenario-option" data-value="structure">
+                        <strong>C. 强调系统指导</strong><br>
+                        "我会在社群里提供系统化的指导，从饮食评估到习惯养成，每一步都有明确的方法和跟进，确保你有清晰的行动路径。"
+                    </div>
+                </div>
+                <div class="error-message" id="scenario3Error">请选择情景3的价值描述方式</div>
+            </div>
+            
+            <div class="form-group">
+                <div class="scenario-box" id="scenario4">
+                    <div class="scenario-question">情景4：当用户问"我工作很忙，没时间准备健康餐怎么办？"时，您的第一反应是？</div>
+                    <div class="scenario-option" data-value="simple">
+                        <strong>A. 提供极简方案</strong><br>
+                        "健康饮食不一定复杂。我教你几个5分钟就能搞定的搭配，利用周末稍微准备一下，工作日直接组合就行。"
+                    </div>
+                    <div class="scenario-option" data-value="plan">
+                        <strong>B. 帮助建立系统</strong><br>
+                        "时间管理是关键。我们可以一起制定一个高效备餐计划，把食材预处理、分批烹饪安排好，其实比每天点外卖更省时。"
+                    </div>
+                    <div class="scenario-option" data-value="mindset">
+                        <strong>C. 调整思维方式</strong><br>
+                        "首先把'没时间'这个观念转变一下。健康饮食是对自己最重要的投资，每天花一点时间准备，换来的是一整天的精力和长期健康。"
+                    </div>
+                </div>
+                <div class="error-message" id="scenario4Error">请选择情景4的回应方式</div>
+            </div>
+            
+            <h2><i class="fas fa-user-cog"></i> 第三部分：个人设置</h2>
+            
+            <div class="form-group">
+                <h3>5. 您的姓名/昵称</h3>
+                <div class="input-group">
+                    <label for="userName">这将用于生成您的个性化定位声明：</label>
+                    <input type="text" id="userName" placeholder="请输入您计划在抖音使用的姓名或昵称" required>
+                    <div class="error-message" id="nameError">请输入您的姓名或昵称</div>
+                </div>
+            </div>
+            
+            <div class="btn-container">
+                <button type="button" class="btn-primary" id="generateBtn">
+                    <i class="fas fa-magic"></i> 生成我的AI起号方案
+                </button>
+                <button type="button" class="btn-secondary" id="resetBtn">
+                    <i class="fas fa-redo"></i> 重新填写
+                </button>
+            </div>
+        </form>
+        
+        <div class="result-container" id="resultContainer">
+            <div class="result-header">
+                <div class="result-title"><i class="fas fa-file-alt"></i> 您的专属AI抖音起号方案</div>
+                <button type="button" class="btn-secondary" id="exportBtn">
+                    <i class="fas fa-download"></i> 导出完整方案
+                </button>
+            </div>
+            
+            <div class="result-content" id="resultContent">
+                <!-- 动态生成的内容将出现在这里 -->
+            </div>
+            
+            <div class="video-guide">
+                <h3><i class="fas fa-video"></i> 三类视频标准化生产模板</h3>
+                <p style="margin-bottom: 20px; color: var(--text-light);">基于您的个人定位，我们为您规划了以下内容策略：<strong>曝光视频(60%)和价值视频(30%)使用AI数字人制作，引流视频(10%)使用真人出镜。</strong></p>
+                
+                <div class="video-type exposure-video">
+                    <div class="video-icon"><i class="fas fa-fire"></i></div>
+                    <div class="video-info">
+                        <div class="video-title">曝光视频 (60%) - AI数字人制作</div>
+                        <div class="video-meta">
+                            <div class="meta-item"><i class="fas fa-bullseye"></i> 目标：最大范围破圈，吸引注意力</div>
+                            <div class="meta-item"><i class="fas fa-clock"></i> 时长：25-35秒</div>
+                            <div class="meta-item"><i class="fas fa-robot"></i> 形式：AI数字人口播</div>
+                        </div>
+                        <div class="video-structure" id="exposureStructure">
+                            <!-- 动态生成曝光视频结构 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-type value-video">
+                    <div class="video-icon"><i class="fas fa-gem"></i></div>
+                    <div class="video-info">
+                        <div class="video-title">价值视频 (30%) - AI数字人制作</div>
+                        <div class="video-meta">
+                            <div class="meta-item"><i class="fas fa-bullseye"></i> 目标：建立专业信任，提供深度价值</div>
+                            <div class="meta-item"><i class="fas fa-clock"></i> 时长：45-60秒</div>
+                            <div class="meta-item"><i class="fas fa-robot"></i> 形式：AI数字人口播+图文展示</div>
+                        </div>
+                        <div class="video-structure" id="valueStructure">
+                            <!-- 动态生成价值视频结构 -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="video-type lead-video">
+                    <div class="video-icon"><i class="fas fa-funnel-dollar"></i></div>
+                    <div class="video-info">
+                        <div class="video-title">引流视频 (10%) - 真人出镜制作</div>
+                        <div class="video-meta">
+                            <div class="meta-item"><i class="fas fa-bullseye"></i> 目标：引导高意向用户进入私域</div>
+                            <div class="meta-item"><i class="fas fa-clock"></i> 时长：20-30秒</div>
+                            <div class="meta-item"><i class="fas fa-user"></i> 形式：真人出镜口播</div>
+                        </div>
+                        <div class="video-structure" id="leadStructure">
+                            <!-- 动态生成引流视频结构 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-logo">吃着瘦</div>
+        <div>2026 吃着瘦 AI抖音起号系统</div>
+        <div style="font-size: 0.9rem; margin-top: 10px; font-weight: normal;">提示：本方案结合了AI数字人与真人出镜的混合策略，可根据实际情况灵活调整</div>
+    </footer>
+
+    <script>
+        // 初始化进度跟踪
+        let totalQuestions = 9; // 基础4个 + 情景4个 + 姓名1个
+        let answeredQuestions = 0;
+        
+        // 更新进度条
+        function updateProgress() {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const percentage = Math.round((answeredQuestions / totalQuestions) * 100);
+            
+            progressFill.style.width = `${percentage}%`;
+            
+            if (answeredQuestions < totalQuestions) {
+                progressText.textContent = `已完成 ${answeredQuestions}/${totalQuestions} 个问题 (${percentage}%)`;
+            } else {
+                progressText.innerHTML = `<span style="color: var(--primary-dark); font-weight: bold;">✓ 所有问题已完成，可以生成报告！</span>`;
+            }
+        }
+        
+        // 选项卡选择功能
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const parentGroup = this.closest('.options-grid');
+                const previouslySelected = parentGroup.querySelector('.option-card.selected');
+                
+                // 如果是新选择（不是取消选择）
+                if (previouslySelected !== this) {
+                    if (!previouslySelected) {
+                        answeredQuestions++;
+                        updateProgress();
+                    }
+                    
+                    parentGroup.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                }
+            });
+        });
+        
+        // 情景选项选择功能
+        document.querySelectorAll('.scenario-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const parentScenario = this.closest('.scenario-box');
+                const previouslySelected = parentScenario.querySelector('.scenario-option.selected');
+                
+                // 如果是新选择（不是取消选择）
+                if (previouslySelected !== this) {
+                    if (!previouslySelected) {
+                        answeredQuestions++;
+                        updateProgress();
+                    }
+                    
+                    parentScenario.querySelectorAll('.scenario-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                }
+            });
+        });
+        
+        // 姓名输入框事件
+        const userNameInput = document.getElementById('userName');
+        let nameAnswered = false;
+        
+        userNameInput.addEventListener('input', function() {
+            const hasValue = this.value.trim().length > 0;
+            
+            if (hasValue && !nameAnswered) {
+                answeredQuestions++;
+                nameAnswered = true;
+                updateProgress();
+            } else if (!hasValue && nameAnswered) {
+                answeredQuestions--;
+                nameAnswered = false;
+                updateProgress();
+            }
+        });
+        
+        // 生成报告按钮事件
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            if (!validateForm()) return;
+            
+            generateReport();
+            document.getElementById('resultContainer').classList.add('show');
+            
+            // 滚动到结果区域
+            document.getElementById('resultContainer').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+        
+        // 重置表单按钮事件
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            document.querySelectorAll('.scenario-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            document.getElementById('userName').value = '';
+            document.getElementById('resultContainer').classList.remove('show');
+            
+            // 重置错误信息
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+            
+            // 重置进度
+            answeredQuestions = 0;
+            nameAnswered = false;
+            updateProgress();
+        });
+        
+        // 导出报告按钮事件
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const resultText = document.getElementById('resultContent').innerText;
+            const exposureStructure = document.getElementById('exposureStructure').innerText;
+            const valueStructure = document.getElementById('valueStructure').innerText;
+            const leadStructure = document.getElementById('leadStructure').innerText;
+            
+            const fullReport = `=== 吃着瘦AI抖音起号方案 ===\n\n${resultText}\n\n=== 三类视频标准化模板 ===\n\n【曝光视频 - AI数字人】\n${exposureStructure}\n\n【价值视频 - AI数字人】\n${valueStructure}\n\n【引流视频 - 真人出镜】\n${leadStructure}\n\n=== 生成时间 ===\n${new Date().toLocaleString()}\n\n© 2026 吃着瘦`;
+            
+            const blob = new Blob([fullReport], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `吃着瘦AI起号方案_${document.getElementById('userName').value}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+        
+        // 表单验证函数 - 修复版
+        function validateForm() {
+            let isValid = true;
+            
+            // 验证必填选项
+            const requiredGroups = [
+                { id: 'ageGroup', errorId: 'ageError' },
+                { id: 'genderGroup', errorId: 'genderError' },
+                { id: 'professionGroup', errorId: 'professionError' },
+                { id: 'storyGroup', errorId: 'storyError' }
+            ];
+            
+            requiredGroups.forEach(group => {
+                const selected = document.querySelector(`#${group.id} .option-card.selected`);
+                const errorElement = document.getElementById(group.errorId);
+                
+                if (!selected) {
+                    errorElement.style.display = 'block';
+                    isValid = false;
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            });
+            
+            // 验证情景选择题 - 修复：使用具体的ID选择器
+            const scenarioIds = ['scenario1', 'scenario2', 'scenario3', 'scenario4'];
+            scenarioIds.forEach((scenarioId, index) => {
+                const scenarioSelected = document.querySelector(`#${scenarioId} .scenario-option.selected`);
+                const errorElement = document.getElementById(`${scenarioId}Error`);
+                
+                if (!scenarioSelected) {
+                    errorElement.style.display = 'block';
+                    isValid = false;
+                } else {
+                    errorElement.style.display = 'none';
+                }
+            });
+            
+            // 验证姓名
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) {
+                document.getElementById('nameError').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('nameError').style.display = 'none';
+            }
+            
+            return isValid;
+        }
+        
+        // 生成报告函数
+        function generateReport() {
+            // 收集表单数据
+            const userName = document.getElementById('userName').value.trim();
+            const age = document.querySelector('#ageGroup .option-card.selected').dataset.value;
+            const gender = document.querySelector('#genderGroup .option-card.selected').dataset.value;
+            const professionCard = document.querySelector('#professionGroup .option-card.selected');
+            const professionValue = professionCard.dataset.value;
+            
+            // 获取职业显示文本
+            let profession = professionCard.querySelector('.option-title').textContent;
+            
+            const story = document.querySelector('#storyGroup .option-card.selected').dataset.value;
+            
+            // 收集情景选择题答案
+            const scenario1 = document.querySelector('#scenario1 .scenario-option.selected').dataset.value;
+            const scenario2 = document.querySelector('#scenario2 .scenario-option.selected').dataset.value;
+            const scenario3 = document.querySelector('#scenario3 .scenario-option.selected').dataset.value;
+            const scenario4 = document.querySelector('#scenario4 .scenario-option.selected').dataset.value;
+            
+            // 数据映射
+            const ageMap = {
+                '30-40': { label: '30-40岁', span: '中青年', focus: '效率与平衡' },
+                '40-50': { label: '40-50岁', span: '中年', focus: '健康预警与家庭' },
+                '50-60': { label: '50-60岁', span: '中老年', focus: '慢病预防与品质' }
+            };
+            
+            const genderMap = {
+                'male': { label: '男性', pronoun: '他', target: '男性用户', healthFocus: '精力管理、内脏脂肪' },
+                'female': { label: '女性', pronoun: '她', target: '女性用户', healthFocus: '内分泌平衡、代谢管理' }
+            };
+            
+            const storyMap = {
+                'success': { label: '成功管理者', desc: '自身有显著健康改善经历' },
+                'learner': { label: '终身学习者', desc: '系统学习健康知识，持有相关认证' },
+                'helper': { label: '助人分享者', desc: '享受帮助他人改善健康的成就感' }
+            };
+            
+            const scenarioMap = {
+                'empathy': { label: '共情安抚型', strength: '情感连接，缓解焦虑' },
+                'analysis': { label: '理性分析型', strength: '逻辑清晰，解决方案明确' },
+                'encouragement': { label: '直接鼓励型', strength: '行动导向，充满能量' },
+                'metaphor': { label: '比喻讲解型', strength: '生动形象，易于理解' },
+                'science': { label: '科学原理型', strength: '专业可信，原理清晰' },
+                'experience': { label: '经验分享型', strength: '真实可信，有故事性' },
+                'community': { label: '社群氛围型', strength: '营造归属感，增强粘性' },
+                'resources': { label: '资源提供型', strength: '实用价值明确，转化直接' },
+                'structure': { label: '系统指导型', strength: '路径清晰，有掌控感' },
+                'simple': { label: '极简方案型', strength: '降低执行门槛，易于上手' },
+                'plan': { label: '系统规划型', strength: '高效有序，长远考虑' },
+                'mindset': { label: '思维转变型', strength: '根本性改变，认知升级' }
+            };
+            
+            // 分析用户风格
+            const styleTraits = [];
+            const scenarioResults = [scenario1, scenario2, scenario3, scenario4];
+            
+            scenarioResults.forEach(scenario => {
+                const style = scenarioMap[scenario].label;
+                if (!styleTraits.includes(style)) {
+                    styleTraits.push(style);
+                }
+            });
+            
+            // 确定主导风格
+            let dominantStyle = '平衡多元型';
+            if (styleTraits.includes('共情安抚型') && styleTraits.includes('比喻讲解型')) {
+                dominantStyle = '温暖故事型';
+            } else if (styleTraits.includes('理性分析型') && styleTraits.includes('科学原理型')) {
+                dominantStyle = '科学解构型';
+            } else if (styleTraits.includes('直接鼓励型') && styleTraits.includes('极简方案型')) {
+                dominantStyle = '行动教练型';
+            }
+            
+            // 确定目标用户
+            let targetUser = '';
+            let userScene = '';
+            
+            if (age === '30-40') {
+                targetUser = gender === 'male' ? '忙碌的职场爸爸' : '职场妈妈';
+                userScene = gender === 'male' ? '应酬频繁与久坐办公' : '工作家庭双重压力下的健康管理';
+            } else if (age === '40-50') {
+                targetUser = gender === 'male' ? '中年事业男性' : '中年女性';
+                userScene = gender === 'male' ? '代谢下降与精力维持' : '内分泌变化与抗衰老需求';
+            } else {
+                targetUser = gender === 'male' ? '资深健康男士' : '资深健康女士';
+                userScene = '慢病预防与生活品质提升';
+            }
+            
+            // 确定内容侧重
+            let contentFocus = '';
+            if (dominantStyle === '温暖故事型') {
+                contentFocus = '70%心态建设与生活共鸣 + 30%简单实操方法';
+            } else if (dominantStyle === '科学解构型') {
+                contentFocus = '70%原理科普与数据分析 + 30%系统性解决方案';
+            } else {
+                contentFocus = '70%行动指南与效率技巧 + 30%动力激发与目标管理';
+            }
+            
+            // 生成报告内容
+            const report = `【账号定位声明】
+
+"我是${userName}，一位${ageMap[age].label}的${profession}。
+作为${storyMap[story].label}，我深知${targetUser}在${userScene}时的真实困扰。
+在我的抖音主页，您将看到${styleTraits.join('、')}的融合，用${dominantStyle}的方式，为您提供${genderMap[gender].healthFocus}的可持续方案。"
+
+【您的个人画像分析】
+• 年龄阶段：${ageMap[age].label} - ${ageMap[age].span}，关注${ageMap[age].focus}
+• 性别视角：${genderMap[gender].label}视角，更理解${targetUser}的独特需求
+• 职业背景：${profession}，带来${professionValue === 'medical' ? '专业严谨' : professionValue === 'education' ? '系统教学' : professionValue === 'service' ? '共情沟通' : professionValue === 'management' ? '逻辑分析' : professionValue === 'creative' ? '创意表达' : professionValue === 'homemaker' ? '实践智慧' : professionValue === 'retired' ? '人生阅历' : '独特视角'}的优势
+• 核心故事：${storyMap[story].label} - ${storyMap[story].desc}
+• 主导风格：${dominantStyle}
+• 风格特质：${styleTraits.join('、')}
+
+【内容策略建议】
+基于您的个人特质，我们建议：
+1. 内容侧重：${contentFocus}
+2. 话题方向：结合您${ageMap[age].span}的特点，重点关注${age === '30-40' ? '职场健康、效率平衡' : age === '40-50' ? '家庭健康管理、中年代谢' : '慢病预防、品质生活'}
+3. 表达方式：发挥您${styleTraits.join('、')}的优势，让${scenarioMap[scenario1].strength}、${scenarioMap[scenario2].strength}成为您的独特标签
+
+【混合制作策略】
+• 曝光视频(60%) + 价值视频(30%)：使用AI数字人制作，确保专业、稳定、高效产出
+• 引流视频(10%)：您亲自出镜，建立真实、深度的信任连接
+• 优势：AI保证产量与标准化，真人建立情感与信任，完美结合`;
+
+            // 生成三类视频模板
+            let exposureTemplate = '';
+            let valueTemplate = '';
+            let leadTemplate = '';
+            
+            if (dominantStyle === '温暖故事型') {
+                exposureTemplate = `0-3秒：热点引入 - "最近XX话题很火，但你知道它背后的健康真相吗？"\n4-15秒：共鸣痛点 - "你是不是也经历过...？这其实是因为..."\n16-30秒：温暖启示 - "其实不必焦虑，一个简单的小调整就能..."\n结尾：互动引导 - "你有类似经历吗？评论区聊聊~"`;
+                
+                valueTemplate = `0-5秒：故事开场 - "我有个学员曾经...，直到发现了这个方法"\n6-25秒：方法阐述 - "核心是三个步骤：1... 2... 3..."\n26-45秒：原理升华 - "这背后的科学依据是...，就像..."\n46-60秒：价值总结 - "所以，下次遇到...时，记得..."`;
+                
+                leadTemplate = `0-5秒：真人展示 - "答应大家的《XX手册》我已经整理好了，打印了出来"\n6-15秒：价值说明 - "里面包含了...和...，特别适合...的朋友"\n16-25秒：清晰指令 - "现在，点击我头像进入主页，再点击'粉丝群'直接加入领取"\n结尾：温情催促 - "前200名还能获得我的专属答疑机会哦"`;
+            } 
+            else if (dominantStyle === '科学解构型') {
+                exposureTemplate = `0-3秒：反常识提问 - "你以为...是对的？其实科学告诉我们相反"\n4-15秒：数据呈现 - "研究显示...，数据表明..."\n16-30秒：简明结论 - "所以真正有效的是...，记住这个关键点"\n结尾：好奇引导 - "想了解更多底层逻辑？关注我"`;
+                
+                valueTemplate = `0-5秒：问题定义 - "今天我们系统解决'XX'这个问题"\n6-25秒：原理拆解 - "从生理机制看...，涉及三个关键激素..."\n26-45秒：方案推导 - "因此，对应的解决方案应该是1... 2... 3..."\n46-60秒：应用示范 - "具体到日常，你可以这样操作..."`;
+                
+                leadTemplate = `0-5秒：实物展示 - "这是我为你准备的《科学减重自测流程图》"\n6-15秒：逻辑说明 - "通过这个工具，你可以清晰判断自己的...，找到..."\n16-25秒：明确路径 - "点击我的头像，进入主页的粉丝群，群公告里有领取方式"\n结尾：理性呼吁 - "工具已经为你准备好，下一步行动在你"`;
+            }
+            else { // 行动教练型
+                exposureTemplate = `0-3秒：直接痛点 - "你是不是总为...而烦恼？"\n4-15秒：快解方案 - "教你一个立刻就能用的方法：..."\n16-30秒：行动指令 - "今天下班就试试，然后回来告诉我效果"\n结尾：挑战引导 - "敢不敢在评论区立下你的今日flag？"`;
+                
+                valueTemplate = `0-5秒：承诺价值 - "今天给你一个绝对好用的'XX公式'"\n6-25秒：步骤演示 - "第一步...第二步...第三步...，看好了"\n26-45秒：避坑提醒 - "特别注意这两个常见错误：1... 2..."\n46-60秒：行动清单 - "这是你的本周行动清单，照做就行"`;
+                
+                leadTemplate = `0-5秒：成果展示 - "看我学员用了这份《一周行动清单》后的变化"\n6-15秒：效率承诺 - "如果你也想有清晰不迷茫的行动计划，这个帮你"\n16-25秒：简单指令 - "现在，点击头像下方的粉丝群，直接进群领取"\n结尾：紧迫感 - "本周只剩最后50个名额，行动要快"`;
+            }
+            
+            // 显示报告
+            document.getElementById('resultContent').innerHTML = report.replace(/\n/g, '<br>').replace(/【(.*?)】/g, '<strong style="color: var(--primary-dark);">【$1】</strong>');
+            document.getElementById('exposureStructure').innerHTML = exposureTemplate.replace(/\n/g, '<br>');
+            document.getElementById('valueStructure').innerHTML = valueTemplate.replace(/\n/g, '<br>');
+            document.getElementById('leadStructure').innerHTML = leadTemplate.replace(/\n/g, '<br>');
+        }
+        
+        // 初始更新进度条
+        updateProgress();
+    </script>
+</body>
+</html>
